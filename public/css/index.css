@@ -1,0 +1,154 @@
+body{
+    margin: 0px;
+    display: flex;              /*設置地圖(main部分)可適時填充頁面*/
+    flex-direction: column;
+    height: 100vh;              /*可視區高度100%，1vh = 可視區高度/100 */
+}
+/* nav */
+nav{
+    width: 100%;                /*設定寬度為畫面100%*/
+    position: fixed;            /*設定凍結視窗*/
+    top: 0px;
+    z-index: 999;                 /*設定z軸高度避免凍結視窗內容被body中其他物件覆蓋*/
+    display: flex;
+    padding: 10px 0px;           /*上下內縮10px*/
+    background-color: #ffffff;
+    font-family: "Noto Sans TC";
+    color: #666666;
+    border-bottom:1px solid #E8E8E8;    /*設定物件底線樣式*/
+}
+.navLeftside{
+    flex: none;                 /*none為不彈性縮放，要給width*/
+    width:210px;
+    font-family: "Noto Sans";
+    font-size: 30px;
+    font-weight: bold;
+    color: #F75000;
+    display: flex;
+    align-items: center;        /*文字在容器內垂直置中*/
+    margin: 0px 0px 0px 10px;   /*向左外推10px*/
+}
+.hyperTitle{
+    color: inherit;             /*繼承原本的文字顏色(不因超連結變色)*/
+    text-decoration: none;      /*消除超連結底線*/
+}
+.timePart, .totalBusPart{
+    flex: auto;
+    display: flex;
+    align-items: center;        /*文字在容器內垂直置中*/
+    justify-content: center;
+}
+.navRightside{
+    width: 252px;
+    flex: none;                 /*auto為彈性縮放，不用給width*/
+    list-style: none;           /*消除li的點*/
+    padding-inline-start: 0px;  /*消除li的前縮排*/
+    display: flex;
+    justify-content: flex-end;  /*物件在容器內水平靠右排列*/
+    align-items: center;        /*物件在容器內垂直置中*/
+    margin: 0px;                /*取消margin設定*/
+}
+.navRightside>li{
+    flex: none;
+    padding: 10px;
+    cursor: pointer;            /*改變滑鼠指標*/
+}
+/* main */
+main{
+    margin-top: 61px;
+    flex: auto;                 /*地圖高度依使用者螢幕高度延伸*/
+    display: flex;
+    max-height: calc(100% - 151px);     /*設定最大高度限制右方進站時間欄位高度*/
+}
+/* main-map */
+#mapId{
+    flex:auto;
+}
+/* estimate time side */
+.estimateTimeSide{
+    overflow-y: auto;
+    flex: none;
+    width: 400px;
+    font-family: "Noto Sans TC";
+    font-size: 16px;
+    position: relative;     /*將容器層當作基準元素，給符號X擺放位置參考*/
+}
+.closeBtn{
+    position: absolute;     /*以容器層左上角為起點，將符號X擺放到指定位置*/
+    top: 12px;              /*距離頂部12px*/
+    right: 12px;            /*距離右側12px*/
+    width: 30px;
+    height: 30px;
+    background-image: url("/image/icon_close.png");     /*將符號X以背景圖呈現*/
+    background-repeat: no-repeat;                       /*背景圖不要重複出現*/
+    background-position: 50% 50%;                       /*背景圖置於容器中間*/
+    cursor: pointer;
+}
+/* estimate time side - section */
+.stopTitle{
+    padding: 15px;                  /*設定內邊界*/
+    margin: 10px 10px 10px 15px;    /*設定上下左右外邊界*/
+    display: flex;
+    flex-direction: column;         /*對齊軸改為垂直*/
+    align-items: center;            /*物件水平置中對齊*/
+    justify-content: center;
+    background-color: #edc3ac;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 150%;
+}
+.stopTitle>div{
+    word-break: normal;     /*換行，英文不會強制斷行*/
+    text-align: center;     /*div內文字置中*/
+    color: #666666;
+}
+.estimateTimeContainer{
+    margin: 10px;           /*設定上下左右外邊界5px*/
+    display: flex;
+}
+.estimateTimeStatus{
+    flex: none;
+    width: 90px;
+    display: flex;          /*水平垂直置中*/
+    align-items: center;
+    justify-content: center;
+    background-color: #dddddd;
+    font-weight: bold;
+    border-radius: 5px;
+    margin: 0px 10px 0px 5px;
+}
+.lesstwominutes{
+    background-color: #ffbaba;
+}
+.busapproach{
+    background-color: #ed0000;
+    color: #ffffff;
+}
+.estimateTimeRoute{
+    flex: auto;
+    line-height: 150%;
+    flex-wrap: wrap;        /*超過寬度自動換行*/
+    border-bottom: 2px solid #dddddd;    /*設定物件底線樣式*/
+}
+.estimateTimeRoute-lesstwominutes{
+    border-bottom: 2px solid #ffbaba;
+}
+.estimateTimeRoute-busapproach{
+    border-bottom: 2px solid #ed0000;
+}
+/* footer */
+footer{
+    background-color: #757575;
+    min-height: 90px;
+    display: flex;
+    flex-direction: column;         /*排列改為垂直對齊*/
+    align-items: center;            /*水平置中*/
+    justify-content: space-around;  /*垂直均分空間對齊*/
+    font-family: "Noto Sans TC";
+    font-weight: bold;
+    color: #ffffff;
+}
+.hyperTitleBlue{
+    text-decoration: none;      /*消除超連結底線*/
+}
