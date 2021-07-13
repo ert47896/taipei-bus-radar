@@ -5,31 +5,23 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <title>Taipei Bus Radar</title>
-    <link href="/css/index.css" rel="stylesheet" type="text/css" media="all" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-        crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-        crossorigin=""></script>
-    <script defer src="/js/index.js"></script>
+    <link href="/css/routes.css" rel="stylesheet" type="text/css" media="all" />
+    <script defer src="/js/routes.js"></script>
 </head>
 
 <body>
     <nav>
         <div class="navLeftside"><a class="hyperTitle" href="/">TaipeiBusRadar</a></div>
-        <div class="timePart">現在時間(待完成)</div>
-        <div class="totalBusPart"></div>
+        <div class="search">
+            <input type="text" id="keyword" placeholder="輸入路線名稱查詢" /><button class="searchBtn"></button>
+        </div>
         <ul class="navRightside">
             <li class="routePlan">路線規劃</li>
             <li class="routeData"><a class="hyperTitle" href="/routes">路線資訊</a></li>
             <li class="stationData">車站資訊</li>
         </ul>
     </nav>
-    <main>
-        <article id="mapId"></article>
-        <aside></aside>
-    </main>
+    <main></main>
     <footer>
         <div>COPYRIGHT © 2021 TaipeiBusRadar</div>
         <div>Data from <a class="hyperTitleBlue" href="https://ptx.transportdata.tw/PTX/">交通部公共運輸整合資訊流通服務平臺（PTX）</a>

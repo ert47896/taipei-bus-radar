@@ -11,7 +11,7 @@ let models = {
             return response.json();
         }).then((result) => {
             this.data = result;
-        })
+        });
     }
 }
 // Views

@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify
 from module.mysqlmethods import Sqlmethod
+from module.cache import cache
 
 stoplocationApi = Blueprint("stoplocationApi", __name__)
 
@@ -7,7 +8,9 @@ stoplocationApi = Blueprint("stoplocationApi", __name__)
 # readData(query, value=None) return 查詢資料 {"error"}錯誤
 mysql = Sqlmethod()
 
+
 @stoplocationApi.route("/stoplocation", methods=["GET"])
+@cache.cached(timeout=3600)
 def getStopstatus():
     # 由資料庫取出所需資料
     selectSql = "SELECT stopname_tw, stopname_en, address, ST_Y(coordinate), ST_X(coordinate) FROM stationinfo"
@@ -18,13 +21,10 @@ def getStopstatus():
     returnData["data"] = []
     for rowData in result:
         temp = {
-            "stopname": {
-                "tw": rowData[0],
-                "en": rowData[1]
-            },
+            "stopname": {"tw": rowData[0], "en": rowData[1]},
             "address": rowData[2],
             "longitude": rowData[3],
-            "latitude": rowData[4]
+            "latitude": rowData[4],
         }
         returnData["data"].append(temp)
     return jsonify(returnData), 200

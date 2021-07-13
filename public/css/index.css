@@ -55,7 +55,7 @@ nav{
 }
 /* main */
 main{
-    margin-top: 61px;
+    margin-top: 62px;
     flex: auto;                 /*地圖高度依使用者螢幕高度延伸*/
     display: flex;
     max-height: calc(100% - 151px);     /*設定最大高度限制右方進站時間欄位高度*/

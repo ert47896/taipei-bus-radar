@@ -3,6 +3,7 @@ from module import cache
 from route.buslocationApi import buslocationApi
 from route.stoplocationApi import stoplocationApi
 from route.estimatetimeApi import estimatetimeApi
+from route.routedataApi import routesApi
 
 app = Flask(__name__, static_folder="public", static_url_path="/")
 
@@ -17,10 +18,21 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/routes")
+def routes_page():
+    return render_template("routes.html")
+
+
+@app.route("/route/<routename>")
+def each_route(routename):
+    return render_template("route.html")
+
+
 # API
 app.register_blueprint(buslocationApi, url_prefix="/api")
 app.register_blueprint(stoplocationApi, url_prefix="/api")
 app.register_blueprint(estimatetimeApi, url_prefix="/api")
+app.register_blueprint(routesApi, url_prefix="/api")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=3000)
