@@ -35,12 +35,12 @@ class Sqlmethod:
                 cursor.executemany(query, value)
             else:
                 cursor.execute(query, value)
-            return {"ok": True}
+            connection_object.commit()
+            # return {"ok": True}
         except Exception as error:
             self.recordError(str(error))
-            return {"error": str(error)}
+            # return {"error": str(error)}
         finally:
-            connection_object.commit()
             cursor.close()
             connection_object.close()
 
