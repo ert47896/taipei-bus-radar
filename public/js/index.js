@@ -175,6 +175,7 @@ let controllers = {
         this.showBusLocation();
         this.showStop();
         this.renewBusLocation();
+        this.timeNow();
     },
     // 顯示公車位置
     showBusLocation: function () {
@@ -228,6 +229,25 @@ let controllers = {
                 });
             };
         }, 15000);
+    },
+    timeNow: function () {
+        const dateNow = new Date();
+        let hour = dateNow.getHours();
+        if (hour < 10) {
+            hour = "0" + (hour).toString();
+        };
+        let minute = dateNow.getMinutes();
+        if (minute < 10) {
+            minute = "0" + (minute).toString();
+        };
+        let second = dateNow.getSeconds();
+        if (second < 10) {
+            second = "0" + (second).toString();
+        };
+        const timeDOM = document.querySelector(".timePart");
+        timeDOM.innerHTML = "";
+        timeDOM.textContent = hour + ":" + minute + ":" + second;
+        setTimeout("controllers.timeNow()", 1000);
     }
 }
 controllers.init();     // 載入頁面初始化

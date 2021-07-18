@@ -198,6 +198,8 @@ let controllers = {
         this.depreturnButton();
         // 建立15秒更新routestatus資料 (direction=0 去程)
         this.renewRouteStatus(this.initDirection);
+        // 顯示時間
+        this.timeNow();
     },
     // 讀取此路線routestatus資料(direction=0 去程 direction=1 返程)並繪製，建立15秒更新
     showRoutestatusData: function (direction) {
@@ -244,6 +246,25 @@ let controllers = {
         this.renewRouteStatusInterval = setInterval(() => {
             this.showRoutestatusData(direction);
         }, 15000);
+    },
+    timeNow: function () {
+        const dateNow = new Date();
+        let hour = dateNow.getHours();
+        if (hour < 10) {
+            hour = "0" + (hour).toString();
+        };
+        let minute = dateNow.getMinutes();
+        if (minute < 10) {
+            minute = "0" + (minute).toString();
+        };
+        let second = dateNow.getSeconds();
+        if (second < 10) {
+            second = "0" + (second).toString();
+        };
+        const timeDOM = document.querySelector(".timePart");
+        timeDOM.innerHTML = "";
+        timeDOM.textContent = hour + ":" + minute + ":" + second;
+        setTimeout("controllers.timeNow()", 1000);
     }
 }
 controllers.init();     // 載入頁面初始化

@@ -14,15 +14,14 @@ nav{
     padding: 10px 0px;           /*上下內縮10px*/
     background-color: #ffffff;
     font-family: "Noto Sans TC";
-    color: #666666;
     border-bottom:1px solid #E8E8E8;    /*設定物件底線樣式*/
+    font-weight: bold;
 }
 .navLeftside{
     flex: none;                 /*none為不彈性縮放，要給width*/
     width:210px;
     font-family: "Noto Sans";
     font-size: 30px;
-    font-weight: bold;
     color: #F75000;
     display: flex;
     align-items: center;        /*文字在容器內垂直置中*/
@@ -37,6 +36,7 @@ nav{
     display: flex;
     align-items: center;        /*文字在容器內垂直置中*/
     justify-content: center;
+    font-weight: normal;
 }
 .navRightside{
     width: 252px;
@@ -47,6 +47,7 @@ nav{
     justify-content: flex-end;  /*物件在容器內水平靠右排列*/
     align-items: center;        /*物件在容器內垂直置中*/
     margin: 0px;                /*取消margin設定*/
+    color: #666666;
 }
 .navRightside>li{
     flex: none;
@@ -85,7 +86,6 @@ main{
     font-size: 30px;
     font-weight: bold;
     margin-bottom: 10px;
-    cursor: pointer;
 }
 .noRouteData{
     color: #e60e14;
