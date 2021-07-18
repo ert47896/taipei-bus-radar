@@ -3,7 +3,7 @@ from module import cache
 from route.buslocationApi import buslocationApi
 from route.stoplocationApi import stoplocationApi
 from route.estimatetimeApi import estimatetimeApi
-from route.routedataApi import routesApi
+from route.routedataApi import routesApi, routeApi, routestatusApi
 
 app = Flask(__name__, static_folder="public", static_url_path="/")
 
@@ -33,6 +33,8 @@ app.register_blueprint(buslocationApi, url_prefix="/api")
 app.register_blueprint(stoplocationApi, url_prefix="/api")
 app.register_blueprint(estimatetimeApi, url_prefix="/api")
 app.register_blueprint(routesApi, url_prefix="/api")
+app.register_blueprint(routeApi, url_prefix="/api")
+app.register_blueprint(routestatusApi, url_prefix="/api")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=3000)

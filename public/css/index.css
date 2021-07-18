@@ -33,14 +33,14 @@ nav{
     text-decoration: none;      /*消除超連結底線*/
 }
 .timePart, .totalBusPart{
-    flex: auto;
+    flex: auto;                 /*auto為彈性縮放，不用給width*/
     display: flex;
     align-items: center;        /*文字在容器內垂直置中*/
     justify-content: center;
 }
 .navRightside{
     width: 252px;
-    flex: none;                 /*auto為彈性縮放，不用給width*/
+    flex: none;                 /*none為固定寬度，要給width*/
     list-style: none;           /*消除li的點*/
     padding-inline-start: 0px;  /*消除li的前縮排*/
     display: flex;
@@ -58,16 +58,16 @@ main{
     margin-top: 62px;
     flex: auto;                 /*地圖高度依使用者螢幕高度延伸*/
     display: flex;
-    max-height: calc(100% - 151px);     /*設定最大高度限制右方進站時間欄位高度*/
+    max-height: calc(100% - 132px);     /*設定最大高度限制右方進站時間欄位高度 footer70px nav62px*/
 }
 /* main-map */
 #mapId{
-    flex:auto;
+    flex:auto;              /*flex:auto寬度自動延伸*/
 }
 /* estimate time side */
 .estimateTimeSide{
-    overflow-y: auto;
-    flex: none;
+    overflow-y: auto;       /*內容超過物件高度，以卷軸隱藏*/
+    flex: none;             /*flex:none設定固定寬度*/
     width: 400px;
     font-family: "Noto Sans TC";
     font-size: 16px;
@@ -87,12 +87,12 @@ main{
 /* estimate time side - section */
 .stopTitle{
     padding: 15px;                  /*設定內邊界*/
-    margin: 10px 10px 10px 15px;    /*設定上下左右外邊界*/
+    margin: 10px 10px 10px 15px;    /*設定上右下左外邊界*/
     display: flex;
     flex-direction: column;         /*對齊軸改為垂直*/
     align-items: center;            /*物件水平置中對齊*/
     justify-content: center;
-    background-color: #edc3ac;
+    background-color: #F75000;
     border-radius: 5px;
     font-size: 20px;
     font-weight: bold;
@@ -101,7 +101,7 @@ main{
 .stopTitle>div{
     word-break: normal;     /*換行，英文不會強制斷行*/
     text-align: center;     /*div內文字置中*/
-    color: #666666;
+    color: #ffffff;
 }
 .estimateTimeContainer{
     margin: 10px;           /*設定上下左右外邊界5px*/
@@ -128,7 +128,6 @@ main{
 .estimateTimeRoute{
     flex: auto;
     line-height: 150%;
-    flex-wrap: wrap;        /*超過寬度自動換行*/
     border-bottom: 2px solid #dddddd;    /*設定物件底線樣式*/
 }
 .estimateTimeRoute-lesstwominutes{
@@ -140,7 +139,8 @@ main{
 /* footer */
 footer{
     background-color: #757575;
-    min-height: 90px;
+    flex: none;                     /*footer固定高度*/
+    height: 70px;
     display: flex;
     flex-direction: column;         /*排列改為垂直對齊*/
     align-items: center;            /*水平置中*/

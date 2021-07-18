@@ -1,0 +1,211 @@
+body{
+    margin: 0px;
+    display: flex;              /*設置地圖(main部分)可適時填充頁面*/
+    flex-direction: column;
+    height: 100vh;              /*可視區高度100%，1vh = 可視區高度/100 */
+}
+/* nav */
+nav{
+    width: 100%;                /*設定寬度為畫面100%*/
+    position: fixed;            /*設定凍結視窗*/
+    top: 0px;
+    z-index: 999;                 /*設定z軸高度避免凍結視窗內容被body中其他物件覆蓋*/
+    display: flex;
+    padding: 10px 0px;           /*上下內縮10px*/
+    background-color: #ffffff;
+    font-family: "Noto Sans TC";
+    color: #666666;
+    border-bottom:1px solid #E8E8E8;    /*設定物件底線樣式*/
+}
+.navLeftside{
+    flex: none;                 /*none為不彈性縮放，要給width*/
+    width:210px;
+    font-family: "Noto Sans";
+    font-size: 30px;
+    font-weight: bold;
+    color: #F75000;
+    display: flex;
+    align-items: center;        /*文字在容器內垂直置中*/
+    margin: 0px 0px 0px 10px;   /*向左外推10px*/
+}
+.hyperTitle{
+    color: inherit;             /*繼承原本的文字顏色(不因超連結變色)*/
+    text-decoration: none;      /*消除超連結底線*/
+}
+.timePart, .totalBusPart{
+    flex: auto;                 /*auto為彈性縮放，不用給width*/
+    display: flex;
+    align-items: center;        /*文字在容器內垂直置中*/
+    justify-content: center;
+}
+.navRightside{
+    width: 252px;
+    flex: none;                 /*none為固定寬度，要給width*/
+    list-style: none;           /*消除li的點*/
+    padding-inline-start: 0px;  /*消除li的前縮排*/
+    display: flex;
+    justify-content: flex-end;  /*物件在容器內水平靠右排列*/
+    align-items: center;        /*物件在容器內垂直置中*/
+    margin: 0px;                /*取消margin設定*/
+}
+.navRightside>li{
+    flex: none;
+    padding: 10px;
+    cursor: pointer;            /*改變滑鼠指標*/
+}
+/* main */
+main{
+    margin-top: 62px;           /*上外邊界避免被凍結視窗蓋住*/
+    flex: auto;                 /*地圖高度依使用者螢幕高度延伸*/
+    display: flex;
+    max-height: calc(100% - 132px);     /*設定最大高度限制右方欄位高度(footer高度70px+margin-top外推62px)*/
+}
+/* main-article(map) */
+#mapId{
+    flex:auto;                      /*flex:auto寬度自動延伸*/
+}
+/* map-stop-sequence */
+.map-stop-sequence{
+    background-color: transparent;
+    height: 10px;
+    line-height: 100%;
+}
+/* main-aside(detail+stopshow) */
+.routeStopSide{
+    flex: none;                     /*flex:none設定固定寬度*/
+    width: 400px;
+    font-family: "Noto Sans TC";
+    overflow-y: auto;       /*內容超過物件高度，以卷軸隱藏*/
+}
+/* main-aside(detail+stopshow) 路線+營運業者*/
+.routeDetail{
+    margin: 10px 10px 10px 15px;    /*設定上右下左外邊界*/
+}
+.routeTitle{
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.noRouteData{
+    color: #e60e14;
+}
+.routeSubTitle{
+    font-size: 20px;
+}
+.routeSubTitle>span{
+    margin-right: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+/* main-aside(detail+stopshow) 站牌資訊*/
+.routeStopsNow{
+    margin: 0px 10px 10px 15px;    /*設定上右下左外邊界*/
+    border-top: 2px solid #dddddd;  /*設定物件框線樣式*/
+}
+.depdestPart{
+    margin-top: 10px;
+    display: flex;
+}
+.depdestTitle{
+    flex: none;
+    width: 159px;
+    font-size: 18px;
+    line-height: 150%;
+    font-weight: bold;
+    color: #ffffff;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.depdestTitle{
+    text-align: center;         /*物件內文字水平置中*/
+    background-color: #9a9e9c;
+}
+.depdestTitle-show{
+    background-color: #F75000;
+}
+.routeStopAll{
+    margin: 0px 5px;        /*上下0px 左右5px*/
+    font-size: 16px;
+}
+.eachStopStatus{
+    margin: 10px 0px;        /*上下10px 左右0px*/
+    display: flex;
+    line-height: 150%;
+    min-height: 30px;
+    padding-bottom: 5px;
+    border-bottom: dashed #dddddd 1px;        /*下框線改為虛線*/
+    font-weight: bold;
+}
+.estimateStatus{
+    flex: none;
+    width: 90px;
+    display: flex;          /*水平垂直置中*/
+    align-items: center;
+    justify-content: center;
+    /* background-color: #c6ffae; */
+    background-color: #dddddd;
+    border-radius: 5px;
+}
+.busComingsoon{
+    background-color: #ed0000;
+    color: #ffffff;
+}
+.stopSequence{
+    flex: none;
+    width: 30px;
+    display: flex;          /*水平垂直置中*/
+    align-items: center;
+    justify-content: center;
+    /* background-color: #dddddd; */
+    background-color: #c5e6ff;
+    margin-left: 5px;
+    border-radius: 5px;
+}
+.stopName{
+    flex: auto;
+    display: flex;          /*水平垂直置中*/
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0px 5px 0px 5px;
+}
+.busLocation{
+    flex: none;
+    width: 80px;
+    display: flex;              /*水平垂直置中*/
+    flex-direction: column;     /*對齊軸改成垂直*/
+    align-items: center;
+    justify-content: center;
+}
+.eachBus{
+    width: 100%;
+    background-color: #F75000;
+    border-radius: 5px;
+    padding: 5px 0px;           /*自己物件內縮上下5px 營造框框背景顏色*/
+    margin: 5px 0px;            /*物件對外上下外推5px 維持間距*/
+    display: flex;              /*水平垂直置中*/
+    justify-content: center;
+    align-items: center;
+}
+/* footer */
+footer{
+    flex: none;                     /*footer固定高度*/
+    background-color: #757575;
+    min-height: 70px;
+    display: flex;
+    flex-direction: column;         /*排列改為垂直對齊*/
+    align-items: center;            /*水平置中*/
+    justify-content: space-around;        /*垂直均分空間對齊*/
+    font-family: "Noto Sans TC";
+    font-weight: bold;
+    color: #ffffff;
+}
+.hyperTitleBlue{
+    text-decoration: none;      /*消除超連結底線*/
+}

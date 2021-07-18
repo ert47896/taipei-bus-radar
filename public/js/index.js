@@ -31,15 +31,11 @@ let views = {
     // 自訂icons
     initIcons: function () {
         let busIcon = L.Icon.extend({
-            options: {
-                iconSize: [18, 18]
-            }
+            options: { iconSize: [18, 18] }
         });
         this.orangeBus = new busIcon({ iconUrl: "/image/orange72.png" });
         let busStop = L.Icon.extend({
-            options: {
-                iconSize: [30, 30]
-            }
+            options: { iconSize: [30, 30] }
         });
         this.stopIcon = new busStop({ iconUrl: "/image/bus_stop.png" });
     },
@@ -61,8 +57,7 @@ let views = {
         this.buslayer = L.layerGroup().addTo(this.mymap);
         for (const [key, busData] of Object.entries(data)) {
             busData["OperateBus"].forEach((eachBus) => {
-                let marker = L.marker([eachBus["latitude"], eachBus["longitude"]], { icon: this.orangeBus }).bindTooltip(eachBus["platenumb"]).addTo(this.buslayer);
-                // direction = 0 為去程，direction = 1 為返程
+                let marker = L.marker([eachBus["latitude"], eachBus["longitude"]], { icon: this.orangeBus }).bindTooltip(busData["routename"]["tw"] + "<br>" + eachBus["platenumb"]).addTo(this.buslayer);
                 if (eachBus["direction"] === 0) {
                     marker.bindPopup(busData["routename"]["tw"] + "<br>" + busData["depdestname"]["depname_tw"] + " 往 " +
                         busData["depdestname"]["destname_tw"] + "<br>" + busData["routename"]["en"] + "<br>" + busData["depdestname"]["depname_en"] +
@@ -82,7 +77,7 @@ let views = {
     },
     // 刪除前次公車位置
     removeBus: function () {
-        this.buslayer.remove();
+        this.buslayer.clearLayers();
     },
     // 顯示站牌位置並建立點擊偵測
     renderStop: function (data) {
@@ -90,8 +85,11 @@ let views = {
         for (let i = 0; i < data.length; i++) {
             let marker = L.marker([data[i]["latitude"], data[i]["longitude"]], { icon: this.stopIcon }).addTo(this.stoplayer);
             marker.bindPopup(data[i]["stopname"]["tw"] + "<br>" + data[i]["stopname"]["en"] + "<br>" + "地址: " + data[i]["address"]);
-            // 點擊呼叫函式顯示到站時間
-            marker.on("click", () => { controllers.showEstimateTime(marker.getLatLng().lat, marker.getLatLng().lng) });
+            // 點擊呼叫函式顯示到站時間，且地圖中心設定為車站位置
+            marker.on("click", () => {
+                controllers.showEstimateTime(marker.getLatLng().lat, marker.getLatLng().lng);
+                this.mymap.flyTo(marker.getLatLng());
+            });
         };
         // 圖層放大至17層以上才顯示車站icon
         this.mymap.on("zoomend", () => {
@@ -228,7 +226,7 @@ let controllers = {
                     views.renderEstimateTime(models.data.data);
                     this.deleteBtnControl();
                 });
-            }
+            };
         }, 15000);
     }
 }

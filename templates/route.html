@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <title>Taipei Bus Radar</title>
-    <link href="/css/index.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="/css/route.css" rel="stylesheet" type="text/css" media="all" />
     <!-- start地圖 -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
         integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
@@ -14,7 +14,7 @@
         integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
         crossorigin=""></script>
     <!-- end地圖 -->
-    <script defer src="/js/index.js"></script>
+    <script defer src="/js/route.js"></script>
     <link rel="icon" href="/image/favicon.ico" />
 </head>
 
@@ -31,7 +31,23 @@
     </nav>
     <main>
         <article id="mapId"></article>
-        <aside></aside>
+        <aside class="routeStopSide">
+            <section class="routeDetail">
+                <div class="routeTitle"></div>
+                <div class="routeSubTitle"></div>
+            </section>
+            <section class="routeStopsNow">
+                <header class="depdestPart">
+                    <div class="depdestTitle depdestTitle-show">
+                        <div>去程往</div>
+                    </div>
+                    <div class="depdestTitle">
+                        <div>返程往</div>
+                    </div>
+                </header>
+                <article class="routeStopAll"></article>
+            </section>
+        </aside>
     </main>
     <footer>
         <div>COPYRIGHT © 2021 TaipeiBusRadar</div>

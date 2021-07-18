@@ -1,6 +1,6 @@
 body{
     margin: 0px;
-    display: flex;              /*設置地圖(main部分)可適時填充頁面*/
+    display: flex;              /*設置footer部分(flex:auto)可適時填充頁面*/
     flex-direction: column;
     height: 100vh;              /*可視區高度100%，1vh = 可視區高度/100 */
 }
@@ -144,11 +144,11 @@ main{
 footer{
     flex: auto;                     /*footer依畫面調整高度延伸*/
     background-color: #757575;
-    min-height: 90px;
+    min-height: 80px;
     display: flex;
     flex-direction: column;         /*排列改為垂直對齊*/
     align-items: center;            /*水平置中*/
-    justify-content: center;        /*垂直均分空間對齊*/
+    justify-content: center;        /*垂直置中*/
     font-family: "Noto Sans TC";
     font-weight: bold;
     color: #ffffff;

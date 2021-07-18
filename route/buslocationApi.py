@@ -17,6 +17,22 @@ motcAPI = Auth()
 @buslocationApi.route("/buslocation", methods=["GET"])
 @cache.cached(timeout=15)
 def get_bus_location():
+    returnData = None
+    # 避免cache timeout還未取得資料前，呼叫函式而未取得任何資料
+    while returnData == None:
+        # 取得所有路線公車位置資料
+        returnData = get_route_bus_location()
+    # 呼叫estimatetime.py更新資料
+    from route.estimatetimeApi import get_stop_estimate_time
+    from route.routedataApi import get_bus_on_stop
+
+    get_stop_estimate_time()
+    get_bus_on_stop()
+    return jsonify(returnData), 200
+
+
+@cache.cached(timeout=15, key_prefix="bus_location")
+def get_route_bus_location():
     # Access data from MOTC ptx
     t1 = time.time()
     req_url = "https://ptx.transportdata.tw/MOTC/v2/Bus/RealTimeByFrequency/City/Taipei?$select=PlateNumb%2C%20RouteUID%2C%20BusPosition%2C%20Speed%2C%20Direction&$filter=DutyStatus%20eq%201%20or%20DutyStatus%20eq%200&$format=JSON"
@@ -55,4 +71,4 @@ def get_bus_location():
         }
     t2 = time.time()
     print(t2 - t1)
-    return jsonify(returnData), 200
+    return returnData

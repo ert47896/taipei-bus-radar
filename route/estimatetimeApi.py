@@ -19,7 +19,10 @@ def get_estimatetime_data():
     t1 = time.time()
     latitude = request.args.get("latitude")
     longitude = request.args.get("longitude")
-    stopBusTime = get_stop_estimate_time()
+    stopBusTime = None
+    # 避免cache timeout還未取得資料前，呼叫函式而未取得任何資料
+    while stopBusTime == None:
+        stopBusTime = get_stop_estimate_time()
     t2 = time.time()
     returnData = dict()
     returnData["data"] = []

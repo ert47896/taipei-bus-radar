@@ -15,7 +15,7 @@ motcAPI = Auth()
 busStartTime = dict()
 
 req_url = "https://ptx.transportdata.tw/MOTC/v2/Bus/RealTimeNearStop/City/Taipei?$select=PlateNumb%2C%20DutyStatus%2C%20RouteUID%2C%20Direction%2C%20StopUID%2C%20StopSequence%2C%20DutyStatus%2C%20A2EventType&$format=JSON"
-response = request("get", req_url, headers = motcAPI.authHeader())
+response = request("get", req_url, headers=motcAPI.authHeader())
 response = response.json()
 
 # Insert data into table busonroute & buspassstop
@@ -31,34 +31,61 @@ for eachRow in response:
     elif eachRow["DutyStatus"] == 2 and eachRow["PlateNumb"] in busStartTime:
         busStartTime.pop(eachRow["PlateNumb"])
     # 整理要放進busonroute table的值
-    tempTuple = (eachRow["PlateNumb"], eachRow["RouteUID"], eachRow["Direction"], eachRow["StopUID"], \
-        eachRow["StopSequence"], eachRow["DutyStatus"], eachRow["A2EventType"])
+    tempTuple = (
+        eachRow["PlateNumb"],
+        eachRow["RouteUID"],
+        eachRow["Direction"],
+        eachRow["StopUID"],
+        eachRow["StopSequence"],
+        eachRow["DutyStatus"],
+        eachRow["A2EventType"],
+    )
     insertBusonroute.append(tempTuple)
     # 整理要放進buspassstop的值
     # 針對營運中公車(有在busStartTime dictionary內)，確認該公車在這次營運下，現在的buspass_id與dictionary內是否相同，
     # 相同 更新passtime；不同 相關資料INSERT INTO busspassstop
     if eachRow["PlateNumb"] in busStartTime:
         selectSql = "SELECT buspass_id FROM buspassstop WHERE starttime = %s AND platenumb = %s AND stopUID = %s"
-        selectValue = (busStartTime[eachRow["PlateNumb"]], eachRow["PlateNumb"], eachRow["StopUID"])
+        selectValue = (
+            busStartTime[eachRow["PlateNumb"]][0],
+            eachRow["PlateNumb"],
+            eachRow["StopUID"],
+        )
         checkresult = mysql.readData(selectSql, selectValue)
         if len(checkresult) == 0:
             useSql = "INSERT INTO buspassstop (buspass_id, platenumb, routeUID, direction, stopUID, passtime, hour, \
                 starttime) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-            useValue = (eachRow["PlateNumb"] + str(busStartTime[eachRow["PlateNumb"]]) + eachRow["StopUID"], \
-                eachRow["PlateNumb"], eachRow["RouteUID"], eachRow["Direction"], eachRow["StopUID"], floor(time.time()), \
-                datetime.now().hour, busStartTime[eachRow["PlateNumb"]])
+            useValue = (
+                eachRow["PlateNumb"]
+                + str(busStartTime[eachRow["PlateNumb"]][0])
+                + eachRow["StopUID"],
+                eachRow["PlateNumb"],
+                eachRow["RouteUID"],
+                eachRow["Direction"],
+                eachRow["StopUID"],
+                floor(time.time()),
+                datetime.now().hour,
+                busStartTime[eachRow["PlateNumb"]][0],
+            )
         else:
             useSql = "UPDATE buspassstop SET passtime = %s, hour = %s WHERE starttime = %s AND platenumb = %s AND stopUID = %s"
-            useValue = (floor(time.time()), datetime.now().hour, busStartTime[eachRow["PlateNumb"]], eachRow["PlateNumb"], eachRow["StopUID"])
+            useValue = (
+                floor(time.time()),
+                datetime.now().hour,
+                busStartTime[eachRow["PlateNumb"]][0],
+                eachRow["PlateNumb"],
+                eachRow["StopUID"],
+            )
         mysql.cudData(useSql, useValue)
 insertSqlonroute = "INSERT INTO busonroute (platenumb, routeUID, direction, stopUID, sequence, dutystatus, eventtype) \
     VALUES (%s, %s, %s, %s, %s, %s, %s)"
 # 將上次表格資料清空後新增資料
 mysql.tableDBControl("TRUNCATE busonroute")
 t3 = time.time()
-mysql.cudData(insertSqlonroute, insertBusonroute)
+a = mysql.cudData(insertSqlonroute, insertBusonroute)
 
 
 t2 = time.time()
-print (t2-t1)
-print (t2-t3)
+print(t2 - t1)
+print(t2 - t3)
+print(a)
