@@ -149,7 +149,6 @@ main{
     display: flex;          /*水平垂直置中*/
     align-items: center;
     justify-content: center;
-    /* background-color: #c6ffae; */
     background-color: #dddddd;
     border-radius: 5px;
 }
@@ -163,7 +162,6 @@ main{
     display: flex;          /*水平垂直置中*/
     align-items: center;
     justify-content: center;
-    /* background-color: #dddddd; */
     background-color: #c5e6ff;
     margin-left: 5px;
     border-radius: 5px;
