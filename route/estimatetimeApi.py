@@ -1,17 +1,11 @@
 from flask import Blueprint, jsonify, request
-from module.mysqlmethods import Sqlmethod
+from module.mysqlmethods import mysql
 from math import ceil
 from module.cache import cache
-from module.motcapi import Auth
+from module.motcapi import motcAPI
 import time
 
 estimatetimeApi = Blueprint("estimatetimeApi", __name__)
-
-# 操作mysql CRUD; cudData(query, value) return {"ok":True}成功;
-# readData(query, value=None) return 查詢資料 {"error"}錯誤
-mysql = Sqlmethod()
-# 建立簽章
-motcAPI = Auth()
 
 
 @estimatetimeApi.route("/estimatetime", methods=["GET"])
@@ -19,10 +13,7 @@ def get_estimatetime_data():
     t1 = time.time()
     latitude = request.args.get("latitude")
     longitude = request.args.get("longitude")
-    stopBusTime = None
-    # 避免cache timeout還未取得資料前，呼叫函式而未取得任何資料
-    while stopBusTime == None:
-        stopBusTime = get_stop_estimate_time()
+    stopBusTime = get_stop_estimate_time()
     t2 = time.time()
     returnData = dict()
     returnData["data"] = []
@@ -35,19 +26,23 @@ def get_estimatetime_data():
     # 設定站牌狀態dictionary資料
     stopstatusmap = {1: "未發車", 2: "交管不停靠", 3: "末班車已過", 4: "今日未營運"}
     for eachstopUID in resultstopUID:
-        allrouteUID.append(stopBusTime[eachstopUID[0]]["RouteUID"])
-        # 把routeUID放進returnData["data"][0]["routedata"] 當KEY
-        # 整理estimateStatus狀態
-        # estimatetime不為-1，表示有正確倒數秒數，取無條件進位分鐘數；取站牌狀態
-        estimateTime = stopBusTime[eachstopUID[0]]["EstimateTime"]
-        if estimateTime != -1:
-            estimateStatus = (
-                "進站中" if estimateTime <= 60 else str(ceil(estimateTime / 60)) + "分"
-            )
+        # 於交通部資料中，偶爾會發生路線預計抵達車站時間缺漏，跳過該路線資料讀取
+        if eachstopUID[0] not in stopBusTime:
+            print(eachstopUID[0])
+            continue
         else:
-            estimateStatus = stopstatusmap.get(
-                stopBusTime[eachstopUID[0]]["StopStatus"]
-            )
+            # 把routeUID放進returnData["data"][0]["routedata"] 當KEY
+            allrouteUID.append(stopBusTime[eachstopUID[0]]["RouteUID"])
+            estimateTime = stopBusTime[eachstopUID[0]]["EstimateTime"]
+            # estimatetime不為-1，表示有正確倒數秒數，取無條件進位分鐘數；取站牌狀態
+            if estimateTime != -1:
+                estimateStatus = (
+                    "進站中" if estimateTime <= 60 else str(ceil(estimateTime / 60)) + "分"
+                )
+            else:
+                estimateStatus = stopstatusmap.get(
+                    stopBusTime[eachstopUID[0]]["StopStatus"]
+                )
         returnData["data"][0]["routedata"][stopBusTime[eachstopUID[0]]["RouteUID"]] = {
             "direction": stopBusTime[eachstopUID[0]]["Direction"],
             "estimateStatus": estimateStatus,
@@ -85,8 +80,8 @@ def get_estimatetime_data():
             "en": routeData[4],
         }
     t3 = time.time()
-    print(f"AIP time: {t2-t1}")
-    print(f"Clena time: {t3-t2}")
+    print(f"estimatetimeAPI time: {t2-t1}")
+    print(f"estimatetimeAPIClean time: {t3-t2}")
     return jsonify(returnData), 200
 
 
@@ -94,19 +89,31 @@ def get_estimatetime_data():
 def get_stop_estimate_time():
     from requests import request
 
+    t4 = time.time()
     # Access data from MOTC ptx
     req_url = "https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei?$select=StopUID%2C%20RouteUID%2C%20Direction%2C%20EstimateTime%2C%20StopStatus&$format=JSON"
     response = request("get", req_url, headers=motcAPI.authHeader())
     response = response.json()
     stopBusTime = dict()
-    for eachStop in response:
-        # 尚未發車時部分站點未提供EstimateTime
-        if "EstimateTime" not in eachStop:
-            eachStop["EstimateTime"] = -1
-        stopBusTime[eachStop["StopUID"]] = {
-            "RouteUID": eachStop["RouteUID"],
-            "Direction": eachStop["Direction"],
-            "EstimateTime": eachStop["EstimateTime"],
-            "StopStatus": eachStop["StopStatus"],
-        }
+    try:
+        for eachStop in response:
+            # 尚未發車時部分站點未提供EstimateTime
+            if "EstimateTime" not in eachStop:
+                eachStop["EstimateTime"] = -1
+            stopBusTime[eachStop["StopUID"]] = {
+                "RouteUID": eachStop["RouteUID"],
+                "Direction": eachStop["Direction"],
+                "EstimateTime": eachStop["EstimateTime"],
+                "StopStatus": eachStop["StopStatus"],
+            }
+    except Exception as error:
+        with open("errorinAPI.txt", "a") as outfile:
+            nowStruct = time.localtime(time.time())
+            nowString = time.strftime("%a, %d %b %Y %H:%M:%S", nowStruct)
+            errorStr = nowString + "\n" + str(error) + "\n"
+            outfile.writelines(errorStr)
+            outfile.writelines("ptx response:")
+            outfile.writelines(response)
+    t5 = time.time()
+    print("estimatetimeAPI cache REAL", t5 - t4)
     return stopBusTime

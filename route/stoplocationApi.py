@@ -1,17 +1,15 @@
 from flask import Blueprint, jsonify
-from module.mysqlmethods import Sqlmethod
+from module.mysqlmethods import mysql
 from module.cache import cache
+import gc
 
 stoplocationApi = Blueprint("stoplocationApi", __name__)
 
-# 操作mysql CRUD; cudData(query, value) return {"ok":True}成功;
-# readData(query, value=None) return 查詢資料 {"error"}錯誤
-mysql = Sqlmethod()
-
 
 @stoplocationApi.route("/stoplocation", methods=["GET"])
-@cache.cached(timeout=3600)
+@cache.cached(timeout=300, key_prefix="stop_location")
 def getStopstatus():
+    # gc.collect()
     # 由資料庫取出所需資料
     selectSql = "SELECT stopname_tw, stopname_en, address, ST_Y(coordinate), ST_X(coordinate) FROM stationinfo"
     result = mysql.readData(selectSql)

@@ -1,21 +1,16 @@
 from flask import Blueprint, jsonify, request
-from module.mysqlmethods import Sqlmethod
-from module.motcapi import Auth
+from module.mysqlmethods import mysql
+from module.motcapi import motcAPI
 from module.cache import cache
 from shapely.wkt import loads
 from .estimatetimeApi import get_stop_estimate_time
 from .buslocationApi import get_route_bus_location
 from math import ceil
+import time
 
 routesApi = Blueprint("routesApi", __name__)
 routeApi = Blueprint("routeApi", __name__)
 routestatusApi = Blueprint("routeStatusApi", __name__)
-
-# 操作mysql CRUD; cudData(query, value) return {"ok":True}成功;
-# readData(query, value=None) return 查詢資料 {"error"}錯誤
-mysql = Sqlmethod()
-# 建立簽章
-motcAPI = Auth()
 
 
 @routesApi.route("/routes", methods=["GET"])
@@ -101,8 +96,6 @@ def get_each_routedata(routename):
 
 @routestatusApi.route("/routestatus/<routename>", methods=["GET"])
 def get_routestatus(routename):
-    import time
-
     t1 = time.time()
     selectSql = f"SELECT a.stopUID, d.routeUID, b.stopname_tw, b.address, ST_X(b.coordinate), ST_Y(b.coordinate), c.direction FROM stopofstation AS a JOIN stationinfo AS b ON a.stationUID = b.stationUID JOIN stopofroute AS c ON a.stopUID = c.stopUID JOIN busroute AS d ON c.routeUID = d.routeUID WHERE d.routename_tw = '{routename}'"
     result = mysql.readData(selectSql)
@@ -117,10 +110,7 @@ def get_routestatus(routename):
     routeUID = result[0][1]
     # 取得該路線公車行駛資料(key routeUID)，資料型態list
     # 檢查路線上有公車營運才整理"OperateBus"資料
-    # 避免cache timeout還未取得資料前，呼叫函式而未取得任何資料
-    responsebuslocation = None
-    while responsebuslocation == None:
-        responsebuslocation = get_route_bus_location()["data"]
+    responsebuslocation = get_route_bus_location()["data"]
     if routeUID in responsebuslocation:
         buslocation = get_route_bus_location()["data"][routeUID]["OperateBus"]
         for eachBus in buslocation:
@@ -135,23 +125,24 @@ def get_routestatus(routename):
             else:
                 returnData["data"][1]["OperateBus"].append(busdata)
     # 取得各站牌公車預計抵達時間(key stopUID)，資料型態dictionary
-    # 避免cache timeout還未取得資料前，呼叫函式而未取得任何資料
-    stationstatus = None
-    while stationstatus == None:
-        stationstatus = get_stop_estimate_time()
+    stationstatus = get_stop_estimate_time()
     for eachStop in result:
         # 此站牌stopUID
         stopUID = eachStop[0]
-        # estimatetime不為-1，表示有正確倒數秒數；否則取站牌狀態
-        estimateTime = stationstatus[stopUID]["EstimateTime"]
-        # 設定站牌狀態dictionary資料
-        stopstatusmap = {1: "未發車", 2: "交管不停靠", 3: "末班車已過", 4: "今日未營運"}
-        if estimateTime != -1:
-            estimatestatus = (
-                "進站中" if estimateTime < 180 else str(ceil(estimateTime / 60)) + "分"
-            )
+        # 於交通部資料中，部分車站未提供預計抵達時間相關資料
+        if stopUID not in stationstatus:
+            estimatestatus = "無路線資料"
         else:
-            estimatestatus = stopstatusmap.get(stationstatus[stopUID]["StopStatus"])
+            estimateTime = stationstatus[stopUID]["EstimateTime"]
+            # estimatetime不為-1，表示有正確倒數秒數；否則取站牌狀態
+            # 設定站牌狀態dictionary資料
+            stopstatusmap = {1: "未發車", 2: "交管不停靠", 3: "末班車已過", 4: "今日未營運"}
+            if estimateTime != -1:
+                estimatestatus = (
+                    "進站中" if estimateTime < 120 else str(ceil(estimateTime / 60)) + "分"
+                )
+            else:
+                estimatestatus = stopstatusmap.get(stationstatus[stopUID]["StopStatus"])
         stopdata = {
             "stopUID": eachStop[0],
             "stopname": eachStop[2],
@@ -168,10 +159,7 @@ def get_routestatus(routename):
     # 取得公車目前所在站牌序列(key routeUID)，資料型態list
     # 檢查路線上有公車營運才整理"公車位處哪個站牌"資料，用站牌UID判斷，以站序判斷的話會有誤差(有些路線部分站點
     # 不一定每班都停靠)；以站名判斷的話也會有誤差(部分路線有重複站名)
-    # 避免cache timeout還未取得資料前，呼叫函式而未取得任何資料
-    responsedata = None
-    while responsedata == None:
-        responsedata = get_bus_on_stop()["data"]
+    responsedata = get_bus_on_stop()["data"]
     if routeUID in responsedata:
         busonstop = responsedata[routeUID]
         for eachbusonstop in busonstop:
@@ -186,7 +174,7 @@ def get_routestatus(routename):
                     if eachstop["stopUID"] == busonStopUID:
                         eachstop["platenumb"].append(eachbusonstop["platenumb"])
     t2 = time.time()
-    print(t2 - t1)
+    print("routestatusApi:", t2 - t1)
     return jsonify(returnData), 200
 
 
@@ -194,21 +182,33 @@ def get_routestatus(routename):
 def get_bus_on_stop():
     from requests import request
 
+    t3 = time.time()
     # Access data from MOTC ptx
     req_url = "https://ptx.transportdata.tw/MOTC/v2/Bus/RealTimeNearStop/City/Taipei?$select=PlateNumb%2C%20DutyStatus%2C%20RouteUID%2C%20Direction%2C%20StopUID&$filter=DutyStatus%20eq%201%20or%20DutyStatus%20eq%200&$format=JSON"
     response = request("get", req_url, headers=motcAPI.authHeader())
     response = response.json()
     returnData = dict()
     returnData["data"] = dict()
-    for stopBusData in response:
-        # 檢查routeUID有沒有在returnData["data"]當key
-        if stopBusData["RouteUID"] not in returnData["data"]:
-            returnData["data"][stopBusData["RouteUID"]] = []
-        returnData["data"][stopBusData["RouteUID"]].append(
-            {
-                "platenumb": stopBusData["PlateNumb"],
-                "direction": stopBusData["Direction"],
-                "stopUID": stopBusData["StopUID"],
-            }
-        )
+    try:
+        for stopBusData in response:
+            # 檢查routeUID有沒有在returnData["data"]當key
+            if stopBusData["RouteUID"] not in returnData["data"]:
+                returnData["data"][stopBusData["RouteUID"]] = []
+            returnData["data"][stopBusData["RouteUID"]].append(
+                {
+                    "platenumb": stopBusData["PlateNumb"],
+                    "direction": stopBusData["Direction"],
+                    "stopUID": stopBusData["StopUID"],
+                }
+            )
+    except Exception as error:
+        with open("errorinAPI.txt", "a") as outfile:
+            nowStruct = time.localtime(time.time())
+            nowString = time.strftime("%a, %d %b %Y %H:%M:%S", nowStruct)
+            errorStr = nowString + "\n" + str(error) + "\n"
+            outfile.writelines(errorStr)
+            outfile.writelines("ptx response:")
+            outfile.writelines(response)
+    t4 = time.time()
+    print("routedataCached: ", t4 - t3)
     return returnData

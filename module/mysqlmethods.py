@@ -12,11 +12,8 @@ class Sqlmethod:
         self.password = os.getenv("db_password")
         self.database = os.getenv("db_database")
         self.pool_name = "mypool"
-        self.pool_size = 16
-        self.createConnection()
-
-    def createConnection(self):
-        connection_pool = pooling.MySQLConnectionPool(
+        self.pool_size = 10
+        self.connection_pool = pooling.MySQLConnectionPool(
             host=self.host,
             user=self.user,
             password=self.password,
@@ -24,7 +21,6 @@ class Sqlmethod:
             pool_name=self.pool_name,
             pool_size=self.pool_size,
         )
-        self.connection_pool = connection_pool
 
     # For CREATE, UPDATE, DELETE
     def cudData(self, query, value):
@@ -41,8 +37,9 @@ class Sqlmethod:
             self.recordError(str(error))
             # return {"error": str(error)}
         finally:
-            cursor.close()
-            connection_object.close()
+            if connection_object.is_connected():
+                cursor.close()
+                connection_object.close()
 
     # For SELECT
     def readData(self, query, value=None):
@@ -56,8 +53,9 @@ class Sqlmethod:
             self.recordError(str(error))
             return {"error": str(error)}
         finally:
-            cursor.close()
-            connection_object.close()
+            if connection_object.is_connected():
+                cursor.close()
+                connection_object.close()
 
     # For Table and Database
     def tableDBControl(self, query):
@@ -70,8 +68,9 @@ class Sqlmethod:
             self.recordError(str(error))
             # return {"error": str(error)}
         finally:
-            cursor.close()
-            connection_object.close()
+            if connection_object.is_connected():
+                cursor.close()
+                connection_object.close()
 
     def recordError(self, error):
         with open("errorinsql.txt", "a") as outfile:
@@ -79,3 +78,7 @@ class Sqlmethod:
             nowString = time.strftime("%a, %d %b %Y %H:%M:%S", nowStruct)
             errorStr = nowString + "\n" + error + "\n"
             outfile.writelines(errorStr)
+
+
+# 操作mysql CRUD
+mysql = Sqlmethod()

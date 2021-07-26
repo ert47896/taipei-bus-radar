@@ -102,13 +102,11 @@ let views = {
     },
     // 標註公車位置及服務數量
     renderBus: function (data) {
-        let totalBus = 0;
         // 清空地圖公車
         this.buslayer.clearLayers();
         data.forEach((eachBus) => {
             let marker = L.marker([eachBus["latitude"], eachBus["longitude"]], { icon: this.busIcon }).bindTooltip(eachBus["platenumb"], { direction: "top" }).addTo(this.buslayer);
             marker.bindPopup("車牌(Platenumber): " + eachBus["platenumb"] + "<br>" + "目前時速(Speed): " + eachBus["speed"] + " km/hr");
-            totalBus += 1;
             // 點擊地圖中心設定為車輛位置
             marker.on("click", () => {
                 this.mymap.flyTo(marker.getLatLng(), 15);
@@ -116,8 +114,6 @@ let views = {
             // 將地圖上的公車記錄起來，作為公車在車站位置資料比對(交通部提供公車在車站位置有時會發生該公車於動態資料中查無資訊)
             this.busonmap.push(eachBus["platenumb"]);
         });
-        const textDOM = document.querySelector(".totalBusPart");
-        textDOM.textContent = totalBus + " 輛公車行駛中";
     },
     // 標註車站序、繪製車站資料與公車在車站位置
     renderStopData: function (data) {
@@ -126,51 +122,60 @@ let views = {
         // 清空車站資料內容
         const articleDOM = document.querySelector(".routeStopAll");
         articleDOM.innerHTML = "";
-        for (let index = 0; index < data.length; index++) {
-            // 標註車站序
-            let marker = L.marker([data[index]["latitude"], data[index]["longitude"]], { icon: this.stopIcon }).bindTooltip((index + 1).toString(), { permanent: true, direction: "top", className: "map-stop-sequence" }).addTo(this.stoplayer);
-            marker.bindPopup(data[index]["stopname"] + "<br>" + "地址: " + data[index]["address"]);
-            // 點擊地圖中心設定為車站位置
-            marker.on("click", () => {
-                this.mymap.flyTo(marker.getLatLng(), 15);
-            });
-            // 填入車站資料與公車在車站位置
-            const eachStopDOM = document.createElement("div");
-            eachStopDOM.classList.add("eachStopStatus");
-            articleDOM.appendChild(eachStopDOM);
-            // 車輛到站狀態、車站序列、車站名稱
-            const stopstatusDOM = document.createElement("div");
-            stopstatusDOM.classList.add("estimateStatus");
-            stopstatusDOM.textContent = data[index]["estimatestatus"];
-            // 車輛到站狀態如為進站中，背景色改為紅色
-            if (data[index]["estimatestatus"] === "進站中") {
-                stopstatusDOM.classList.add("busComingsoon");
-            };
-            eachStopDOM.appendChild(stopstatusDOM);
-            const stopsequenceDOM = document.createElement("div");
-            stopsequenceDOM.classList.add("stopSequence");
-            // 交通部給的路線資料sequence部分有錯誤 (例如路線39去程，23下一站跳25)
-            stopsequenceDOM.textContent = index + 1;
-            eachStopDOM.appendChild(stopsequenceDOM);
-            const stopnameDOM = document.createElement("div");
-            stopnameDOM.classList.add("stopName");
-            stopnameDOM.textContent = data[index]["stopname"];
-            eachStopDOM.appendChild(stopnameDOM);
-            // 檢查有無公車在該車站
-            const buslocationDOM = document.createElement("div");
-            buslocationDOM.classList.add("busLocation");
-            eachStopDOM.appendChild(buslocationDOM);
-            if (data[index]["platenumb"].length > 0) {
-                // 新增車牌資料
-                data[index]["platenumb"].forEach((busplatenum) => {
-                    // 檢查車牌有沒有出現在地圖上(交通部提供公車在車站位置有時會發生該公車於動態資料中查無資訊)
-                    if (this.busonmap.includes(busplatenum)) {
-                        const busplatenumbDOM = document.createElement("div");
-                        busplatenumbDOM.classList.add("eachBus");
-                        busplatenumbDOM.textContent = busplatenum;
-                        buslocationDOM.appendChild(busplatenumbDOM);
-                    };
+        // 少數路線返程交通部未提供站點資料
+        if (data.length === 0) {
+            const routeStopAllDOM = document.querySelector(".routeStopAll");
+            const nodataTextDOM = document.createElement("div");
+            nodataTextDOM.classList.add("nodataText");
+            nodataTextDOM.textContent = "未提供路線資料";
+            routeStopAllDOM.appendChild(nodataTextDOM);
+        } else {
+            for (let index = 0; index < data.length; index++) {
+                // 標註車站序
+                let marker = L.marker([data[index]["latitude"], data[index]["longitude"]], { icon: this.stopIcon }).bindTooltip((index + 1).toString(), { permanent: true, direction: "top", className: "map-stop-sequence" }).addTo(this.stoplayer);
+                marker.bindPopup(data[index]["stopname"] + "<br>" + "地址: " + data[index]["address"]);
+                // 點擊地圖中心設定為車站位置
+                marker.on("click", () => {
+                    this.mymap.flyTo(marker.getLatLng(), 15);
                 });
+                // 填入車站資料與公車在車站位置
+                const eachStopDOM = document.createElement("div");
+                eachStopDOM.classList.add("eachStopStatus");
+                articleDOM.appendChild(eachStopDOM);
+                // 車輛到站狀態、車站序列、車站名稱
+                const stopstatusDOM = document.createElement("div");
+                stopstatusDOM.classList.add("estimateStatus");
+                stopstatusDOM.textContent = data[index]["estimatestatus"];
+                // 車輛到站狀態如為進站中，背景色改為紅色
+                if (data[index]["estimatestatus"] === "進站中") {
+                    stopstatusDOM.classList.add("busComingsoon");
+                };
+                eachStopDOM.appendChild(stopstatusDOM);
+                const stopsequenceDOM = document.createElement("div");
+                stopsequenceDOM.classList.add("stopSequence");
+                // 交通部給的路線資料sequence部分有錯誤 (例如路線39去程，23下一站跳25)
+                stopsequenceDOM.textContent = index + 1;
+                eachStopDOM.appendChild(stopsequenceDOM);
+                const stopnameDOM = document.createElement("div");
+                stopnameDOM.classList.add("stopName");
+                stopnameDOM.textContent = data[index]["stopname"];
+                eachStopDOM.appendChild(stopnameDOM);
+                // 檢查有無公車在該車站
+                const buslocationDOM = document.createElement("div");
+                buslocationDOM.classList.add("busLocation");
+                eachStopDOM.appendChild(buslocationDOM);
+                if (data[index]["platenumb"].length > 0) {
+                    // 新增車牌資料
+                    data[index]["platenumb"].forEach((busplatenum) => {
+                        // 檢查車牌有沒有出現在地圖上(交通部提供公車在車站位置有時會發生該公車於動態資料中查無資訊)
+                        if (this.busonmap.includes(busplatenum)) {
+                            const busplatenumbDOM = document.createElement("div");
+                            busplatenumbDOM.classList.add("eachBus");
+                            busplatenumbDOM.textContent = busplatenum;
+                            buslocationDOM.appendChild(busplatenumbDOM);
+                        };
+                    });
+                };
             };
         };
     }

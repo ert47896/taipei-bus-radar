@@ -1,12 +1,6 @@
-from mysqlmethods import Sqlmethod
-from motcapi import Auth
+from mysqlmethods import mysql
+from motcapi import motcAPI
 from requests import request
-
-# 操作mysql CRUD; cudData(query, value) return {"ok":True}成功;
-# readData(query, value=None) return 查詢資料 {"error"}錯誤
-mysql = Sqlmethod()
-# 建立簽章
-motcAPI = Auth()
 
 
 # Insert data into table stationinfo and stopofstation

@@ -12,6 +12,7 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True  # True當flask偵測到template有�
 
 cache.set_cache(app)
 
+
 # Pages
 @app.route("/")
 def index():

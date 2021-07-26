@@ -1,33 +1,21 @@
 from flask import Blueprint, jsonify
-from module.mysqlmethods import Sqlmethod
-from module.motcapi import Auth
+from module.mysqlmethods import mysql
+from module.motcapi import motcAPI
 from module.cache import cache
 from requests import request
 import time
 
 buslocationApi = Blueprint("buslocationApi", __name__)
 
-# 操作mysql CRUD; cudData(query, value) return {"ok":True}成功;
-# readData(query, value=None) return 查詢資料 {"error"}錯誤
-mysql = Sqlmethod()
-# 建立簽章
-motcAPI = Auth()
-
 
 @buslocationApi.route("/buslocation", methods=["GET"])
-@cache.cached(timeout=15)
 def get_bus_location():
-    returnData = None
-    # 避免cache timeout還未取得資料前，呼叫函式而未取得任何資料
-    while returnData == None:
-        # 取得所有路線公車位置資料
-        returnData = get_route_bus_location()
-    # 呼叫estimatetime.py更新資料
-    from route.estimatetimeApi import get_stop_estimate_time
-    from route.routedataApi import get_bus_on_stop
+    t3 = time.time()
+    # 取得所有路線公車位置資料
+    returnData = get_route_bus_location()
 
-    get_stop_estimate_time()
-    get_bus_on_stop()
+    t4 = time.time()
+    print("buslocationDealCache: ", t4 - t3)
     return jsonify(returnData), 200
 
 
@@ -41,20 +29,29 @@ def get_route_bus_location():
     busRouteUID = []
     returnData = dict()
     returnData["data"] = dict()
-    for eachBusData in response:
-        if eachBusData["RouteUID"] not in busRouteUID:
-            busRouteUID.append(eachBusData["RouteUID"])
-            returnData["data"][eachBusData["RouteUID"]] = dict()
-            returnData["data"][eachBusData["RouteUID"]]["OperateBus"] = []
-        returnData["data"][eachBusData["RouteUID"]]["OperateBus"].append(
-            {
-                "platenumb": eachBusData["PlateNumb"],
-                "direction": eachBusData["Direction"],
-                "longitude": eachBusData["BusPosition"]["PositionLon"],
-                "latitude": eachBusData["BusPosition"]["PositionLat"],
-                "speed": eachBusData["Speed"],
-            }
-        )
+    try:
+        for eachBusData in response:
+            if eachBusData["RouteUID"] not in busRouteUID:
+                busRouteUID.append(eachBusData["RouteUID"])
+                returnData["data"][eachBusData["RouteUID"]] = dict()
+                returnData["data"][eachBusData["RouteUID"]]["OperateBus"] = []
+            returnData["data"][eachBusData["RouteUID"]]["OperateBus"].append(
+                {
+                    "platenumb": eachBusData["PlateNumb"],
+                    "direction": eachBusData["Direction"],
+                    "longitude": eachBusData["BusPosition"]["PositionLon"],
+                    "latitude": eachBusData["BusPosition"]["PositionLat"],
+                    "speed": eachBusData["Speed"],
+                }
+            )
+    except Exception as error:
+        with open("errorinAPI.txt", "a") as outfile:
+            nowStruct = time.localtime(time.time())
+            nowString = time.strftime("%a, %d %b %Y %H:%M:%S", nowStruct)
+            errorStr = nowString + "\n" + str(error) + "\n"
+            outfile.writelines(errorStr)
+            outfile.writelines("ptx response:")
+            outfile.writelines(response)
     routeUID_strings = "','".join(busRouteUID)
     selectSql = f"SELECT routeUID, routename_tw, routename_en, depname_tw, depname_en, destname_tw, destname_en FROM busroute WHERE routeUID IN ('{routeUID_strings}')"
     result = mysql.readData(selectSql)
@@ -70,5 +67,5 @@ def get_route_bus_location():
             "destname_en": routeData[6],
         }
     t2 = time.time()
-    print(t2 - t1)
+    print("buslocationAPIReal: ", t2 - t1)
     return returnData
