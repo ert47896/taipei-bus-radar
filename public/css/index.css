@@ -64,6 +64,23 @@ main{
 /* main-map */
 #mapId{
     flex:auto;              /*flex:auto寬度自動延伸*/
+    position: relative;     /*將地圖層當作基準元素，給location button擺放位置參考*/
+}
+/* 自訂我的位置按鈕 */
+.locationBtn{
+    position: absolute;
+    top: 80px;              /*距離頂部 #mapId物件80px*/
+    left: 10px;             /*距離左邊界 #mapId物件10px*/
+    width: 30px;
+    height: 30px;
+    background-color: #ffffff;
+    background-image: url("/image/target.png");     /*將符號target以背景圖呈現*/
+    background-repeat: no-repeat;                   /*背景圖不要重複出現*/
+    background-position: 50% 50%;                   /*背景圖置於容器中間*/
+    cursor: pointer;
+    z-index: 999;
+    border: 2px solid #bbbbbb;
+    border-radius: 2px;
 }
 /* estimate time side */
 .estimateTimeSide{

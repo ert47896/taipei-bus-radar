@@ -50,6 +50,14 @@ let views = {
             OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
             maxZoom: 18
         }).addTo(this.mymap);
+        // 設定比例尺(取消顯示英里、顯示位置調為右下角)
+        L.control.scale({ imperial: false, position: "bottomright" }).addTo(this.mymap);
+        // 顯示使用者位置
+        this.showUserLocation();
+    },
+    // 地圖顯示使用者位置
+    showUserLocation: function () {
+        this.mymap.locate({ setView: true });
     },
     // 標註公車位置及服務數量
     renderBus: function (data) {
@@ -176,6 +184,7 @@ let controllers = {
         this.showStop();
         this.renewBusLocation();
         this.timeNow();
+        this.userLocation();
     },
     // 顯示公車位置
     showBusLocation: function () {
@@ -230,6 +239,7 @@ let controllers = {
             };
         }, 15000);
     },
+    // 顯示現在時間
     timeNow: function () {
         const dateNow = new Date();
         let hour = dateNow.getHours();
@@ -248,6 +258,13 @@ let controllers = {
         timeDOM.innerHTML = "";
         timeDOM.textContent = hour + ":" + minute + ":" + second;
         setTimeout("controllers.timeNow()", 1000);
+    },
+    // 使用者位置按鈕監聽
+    userLocation: function () {
+        const locationButton = document.querySelector(".locationBtn");
+        locationButton.addEventListener("click", () => {
+            views.showUserLocation();
+        });
     }
 }
 controllers.init();     // 載入頁面初始化
