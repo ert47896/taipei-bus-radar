@@ -29,6 +29,11 @@ def each_route(routename):
     return render_template("route.html")
 
 
+@app.route("/stops")
+def stops_page():
+    return render_template("stops.html")
+
+
 # API
 app.register_blueprint(buslocationApi, url_prefix="/api")
 app.register_blueprint(stoplocationApi, url_prefix="/api")

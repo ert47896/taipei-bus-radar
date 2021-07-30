@@ -1,0 +1,108 @@
+body{
+    margin: 0px;
+    display: flex;              /*設置footer部分(flex:auto)可適時填充頁面*/
+    flex-direction: column;
+    height: 100vh;              /*可視區高度100%，1vh = 可視區高度/100 */
+}
+/* nav */
+nav{
+    width: 100%;                /*設定寬度為畫面100%*/
+    position: fixed;            /*設定凍結視窗*/
+    top: 0px;
+    z-index: 999;                 /*設定z軸高度避免凍結視窗內容被body中其他物件覆蓋*/
+    display: flex;
+    padding: 10px 0px;           /*上下內縮10px*/
+    background-color: #ffffff;
+    font-family: "Noto Sans TC";
+    color: #666666;
+    border-bottom:1px solid #E8E8E8;    /*設定物件底線樣式*/
+}
+.navLeftside{
+    flex: none;                 /*none為不彈性縮放，要給width*/
+    width:210px;
+    font-family: "Noto Sans";
+    font-size: 30px;
+    font-weight: bold;
+    color: #F75000;
+    display: flex;
+    align-items: center;        /*文字在容器內垂直置中*/
+    margin: 0px 0px 0px 10px;   /*向左外推10px*/
+}
+.hyperTitle{
+    color: inherit;             /*繼承原本的文字顏色(不因超連結變色)*/
+    text-decoration: none;      /*消除超連結底線*/
+}
+.navRightside{
+    flex: auto;                 /*auto為彈性縮放，不用給width*/
+    list-style: none;           /*消除li的點*/
+    padding-inline-start: 0px;  /*消除li的前縮排*/
+    display: flex;
+    justify-content: flex-end;  /*物件在容器內水平靠右排列*/
+    align-items: center;        /*物件在容器內垂直置中*/
+    margin: 0px;                /*取消margin設定*/
+}
+.navRightside>li{
+    flex: none;
+    padding: 10px;
+    cursor: pointer;            /*改變滑鼠指標*/
+}
+/* main */
+main{
+    margin-top: 62px;
+    flex: auto;
+    display: flex;
+    max-height: calc(100% -132px);
+}
+/* main-search */
+.search{
+    flex: auto;
+    display: flex;
+    align-items: center;        /*文字在容器內垂直置中*/
+    justify-content: center;
+}
+#keyword{
+    border-top-left-radius: 5px;        /*左上圓角*/
+    border-bottom-left-radius: 5px;     /*左下圓角*/
+    border-right: none;                 /*取消搜尋框右邊框線*/
+}
+input[id = keyword]{
+    font-family: "Noto Sans TC";
+    font-weight: bold;
+    font-size: 16px;
+    color: #757575;
+    padding: 5px;               /*input物件欄位內文字內縮5px*/
+}
+.searchBtn{
+    height: 32px;
+    width: 40px;
+    border: none;                                       /*取消btn物件邊框*/
+    background-color: #F75000;                      /*設定buttom背景顏色*/
+    background-image: url("/image/icon_search.png");    /*增加背景圖片*/
+    background-repeat: no-repeat;                       /*背景圖片不要重複出現*/
+    background-position: 50% 50%;                       /*背景圖片置於中間*/
+    border-top-right-radius: 5px;                       /*右上角圓邊*/
+    border-bottom-right-radius: 5px;                    /*右下角圓邊*/
+    cursor: pointer;                                    /*改變滑鼠指標*/
+    padding: 0px;                                       /*取消btn物件預設padding值*/
+}
+/* main-map */
+#mapId{
+    flex: auto;              /*flex:auto寬度自動延伸*/
+    position: relative;     /*將地圖層當作基準元素，給location button擺放位置參考*/
+}
+/* footer */
+footer{
+    background-color: #757575;
+    flex: none;                     /*footer固定高度*/
+    height: 70px;
+    display: flex;
+    flex-direction: column;         /*排列改為垂直對齊*/
+    align-items: center;            /*水平置中*/
+    justify-content: space-around;  /*垂直均分空間對齊*/
+    font-family: "Noto Sans TC";
+    font-weight: bold;
+    color: #ffffff;
+}
+.hyperTitleBlue{
+    text-decoration: none;      /*消除超連結底線*/
+}

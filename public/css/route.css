@@ -179,6 +179,7 @@ main{
     align-items: center;
     justify-content: flex-start;
     margin: 0px 5px 0px 5px;
+    cursor: pointer;
 }
 .busLocation{
     flex: none;

@@ -134,9 +134,9 @@ let views = {
                 // 標註車站序
                 let marker = L.marker([data[index]["latitude"], data[index]["longitude"]], { icon: this.stopIcon }).bindTooltip((index + 1).toString(), { permanent: true, direction: "top", className: "map-stop-sequence" }).addTo(this.stoplayer);
                 marker.bindPopup(data[index]["stopname"] + "<br>" + "地址: " + data[index]["address"]);
-                // 點擊地圖中心設定為車站位置
+                // 車站被點擊設定為地圖中心
                 marker.on("click", () => {
-                    this.mymap.flyTo(marker.getLatLng(), 15);
+                    this.flyToSite(marker.getLatLng(), 15);
                 });
                 // 填入車站資料與公車在車站位置
                 const eachStopDOM = document.createElement("div");
@@ -153,13 +153,17 @@ let views = {
                 eachStopDOM.appendChild(stopstatusDOM);
                 const stopsequenceDOM = document.createElement("div");
                 stopsequenceDOM.classList.add("stopSequence");
-                // 交通部給的路線資料sequence部分有錯誤 (例如路線39去程，23下一站跳25)
+                // 交通部給的路線資料sequence部分有錯誤 (例如路線39去程，23下一站跳25)，故以資料index+1方式呈現站序
                 stopsequenceDOM.textContent = index + 1;
                 eachStopDOM.appendChild(stopsequenceDOM);
                 const stopnameDOM = document.createElement("div");
                 stopnameDOM.classList.add("stopName");
                 stopnameDOM.textContent = data[index]["stopname"];
                 eachStopDOM.appendChild(stopnameDOM);
+                // 點擊站名畫面移動到該站位置
+                stopnameDOM.addEventListener("click", () => {
+                    this.flyToSite(marker.getLatLng(), 16);
+                });
                 // 檢查有無公車在該車站
                 const buslocationDOM = document.createElement("div");
                 buslocationDOM.classList.add("busLocation");
@@ -178,6 +182,9 @@ let views = {
                 };
             };
         };
+    },
+    flyToSite: function (latlng, zoomvalue) {
+        this.mymap.flyTo(latlng, zoomvalue);
     }
 }
 // Controllers
