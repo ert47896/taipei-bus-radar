@@ -25,6 +25,10 @@ let views = {
     stoplayer: null,
     // 記錄公車是否有在地圖上
     busonmap: [],
+    // 前次的站牌direction資料
+    stopDirectionPre: null,
+    // stop marks
+    stopMarks: [],
     // 初始化自訂icons、layer groups
     initMapItems: function () {
         // 公車icon
@@ -117,8 +121,12 @@ let views = {
     },
     // 標註車站序、繪製車站資料與公車在車站位置
     renderStopData: function (data) {
-        // 清空地圖站牌序列
-        this.stoplayer.clearLayers();
+        // 確認本次站牌direction改變更新資料
+        if (this.stopDirectionPre !== controllers.stopDirectionNow) {
+            // 清空地圖站牌序列、stop marks
+            this.stoplayer.clearLayers();
+            this.stopMarks = [];
+        };
         // 清空車站資料內容
         const articleDOM = document.querySelector(".routeStopAll");
         articleDOM.innerHTML = "";
@@ -131,13 +139,6 @@ let views = {
             routeStopAllDOM.appendChild(nodataTextDOM);
         } else {
             for (let index = 0; index < data.length; index++) {
-                // 標註車站序
-                let marker = L.marker([data[index]["latitude"], data[index]["longitude"]], { icon: this.stopIcon }).bindTooltip((index + 1).toString(), { permanent: true, direction: "top", className: "map-stop-sequence" }).addTo(this.stoplayer);
-                marker.bindPopup(data[index]["stopname"] + "<br>" + "地址: " + data[index]["address"]);
-                // 車站被點擊設定為地圖中心
-                marker.on("click", () => {
-                    this.flyToSite(marker.getLatLng(), 15);
-                });
                 // 填入車站資料與公車在車站位置
                 const eachStopDOM = document.createElement("div");
                 eachStopDOM.classList.add("eachStopStatus");
@@ -160,10 +161,6 @@ let views = {
                 stopnameDOM.classList.add("stopName");
                 stopnameDOM.textContent = data[index]["stopname"];
                 eachStopDOM.appendChild(stopnameDOM);
-                // 點擊站名畫面移動到該站位置
-                stopnameDOM.addEventListener("click", () => {
-                    this.flyToSite(marker.getLatLng(), 16);
-                });
                 // 檢查有無公車在該車站
                 const buslocationDOM = document.createElement("div");
                 buslocationDOM.classList.add("busLocation");
@@ -180,8 +177,25 @@ let views = {
                         };
                     });
                 };
+                // 確認本次站牌direction改變更新資料
+                if (this.stopDirectionPre !== controllers.stopDirectionNow) {
+                    // 標註車站序
+                    let marker = L.marker([data[index]["latitude"], data[index]["longitude"]], { icon: this.stopIcon }).bindTooltip((index + 1).toString(), { permanent: true, direction: "top", className: "map-stop-sequence" }).addTo(this.stoplayer);
+                    marker.bindPopup(data[index]["stopname"] + "<br>" + "地址: " + data[index]["address"]);
+                    // 車站被點擊設定為地圖中心
+                    marker.on("click", () => {
+                        this.flyToSite(marker.getLatLng(), 16);
+                    });
+                    this.stopMarks.push(marker);
+                };
+                // 點擊站名畫面移動到該站位置
+                stopnameDOM.addEventListener("click", () => {
+                    this.flyToSite(this.stopMarks[index].getLatLng(), 16);
+                });
             };
         };
+        // 更新目前地圖上站牌direction
+        this.stopDirectionPre = controllers.stopDirectionNow;
     },
     flyToSite: function (latlng, zoomvalue) {
         this.mymap.flyTo(latlng, zoomvalue);
@@ -193,6 +207,8 @@ let controllers = {
     renewRouteStatusInterval: null,
     // 起始畫面預設direction=0 顯示去程資料
     initDirection: 0,
+    // 目前更新route status data的direction
+    stopDirectionNow: null,
     // 初始化
     init: function () {
         views.renderMap(25.046387, 121.516950);
@@ -215,6 +231,8 @@ let controllers = {
     },
     // 讀取此路線routestatus資料(direction=0 去程 direction=1 返程)並繪製，建立15秒更新
     showRoutestatusData: function (direction) {
+        // 將這次的direction存下來提供views部分判斷要不要重繪地圖站牌資料
+        this.stopDirectionNow = direction;
         // 取得routename
         const urlPathname = (window.location.pathname).split("/");
         const routename = urlPathname[urlPathname.length - 1];
