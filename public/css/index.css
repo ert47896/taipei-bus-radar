@@ -19,7 +19,7 @@ nav{
 }
 .navLeftside{
     flex: none;                 /*none為不彈性縮放，要給width*/
-    width:210px;
+    width: 210px;
     font-family: "Noto Sans";
     font-size: 30px;
     color: #F75000;
@@ -39,12 +39,12 @@ nav{
     font-weight: normal;
 }
 .navRightside{
-    width: 252px;
+    width: 170px;
     flex: none;                 /*none為固定寬度，要給width*/
     list-style: none;           /*消除li的點*/
     padding-inline-start: 0px;  /*消除li的前縮排*/
     display: flex;
-    justify-content: flex-end;  /*物件在容器內水平靠右排列*/
+    justify-content: center;    /*物件在容器內水平置中*/
     align-items: center;        /*物件在容器內垂直置中*/
     margin: 0px;                /*取消margin設定*/
     color: #666666;

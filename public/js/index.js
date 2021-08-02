@@ -52,8 +52,6 @@ let views = {
         }).addTo(this.mymap);
         // 設定比例尺(取消顯示英里、顯示位置調為右下角)
         L.control.scale({ imperial: false, position: "bottomright" }).addTo(this.mymap);
-        // 顯示使用者位置
-        this.showUserLocation();
     },
     // 地圖顯示使用者位置
     showUserLocation: function () {

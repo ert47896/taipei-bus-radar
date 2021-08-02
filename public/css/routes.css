@@ -14,7 +14,6 @@ nav{
     padding: 10px 0px;           /*上下內縮10px*/
     background-color: #ffffff;
     font-family: "Noto Sans TC";
-    color: #666666;
     border-bottom:1px solid #E8E8E8;    /*設定物件底線樣式*/
 }
 .navLeftside{
@@ -64,14 +63,16 @@ input[id = keyword]{
     padding: 0px;                                       /*取消btn物件預設padding值*/
 }
 .navRightside{
-    width: 252px;
-    flex: none;                 /*auto為彈性縮放，不用給width*/
+    width: 170px;
+    flex: none;                 /*none為固定，要給width*/
     list-style: none;           /*消除li的點*/
     padding-inline-start: 0px;  /*消除li的前縮排*/
     display: flex;
-    justify-content: flex-end;  /*物件在容器內水平靠右排列*/
+    justify-content: center;    /*物件在容器內水平置中*/
     align-items: center;        /*物件在容器內垂直置中*/
     margin: 0px;                /*取消margin設定*/
+    color: #666666;
+    font-weight: bold;
 }
 .navRightside>li{
     flex: none;

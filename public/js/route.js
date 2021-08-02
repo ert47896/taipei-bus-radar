@@ -184,13 +184,13 @@ let views = {
                     marker.bindPopup(data[index]["stopname"] + "<br>" + "地址: " + data[index]["address"]);
                     // 車站被點擊設定為地圖中心
                     marker.on("click", () => {
-                        this.flyToSite(marker.getLatLng(), 16);
+                        this.flyToSite(marker.getLatLng(), 17);
                     });
                     this.stopMarks.push(marker);
                 };
-                // 點擊站名畫面移動到該站位置
-                stopnameDOM.addEventListener("click", () => {
-                    this.flyToSite(this.stopMarks[index].getLatLng(), 16);
+                // 點擊各站牌資訊畫面移動到該站位置
+                eachStopDOM.addEventListener("click", () => {
+                    this.flyToSite(this.stopMarks[index].getLatLng(), 17);
                 });
             };
         };

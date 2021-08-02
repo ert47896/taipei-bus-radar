@@ -92,7 +92,7 @@ let controllers = {
         const searchButton = document.querySelector(".searchBtn");
         searchButton.addEventListener("click", function () {
             // 接收查詢關鍵字
-            keyword = document.getElementById("keyword").value;
+            const keyword = document.getElementById("keyword").value;
             models.accessAPI(window.location.origin + "/api/routes?keyword=" + keyword).then(() => {
                 // 查無資料
                 if (models.data.data === "查無路線資料") {
