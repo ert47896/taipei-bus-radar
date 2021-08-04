@@ -28,7 +28,6 @@ def get_estimatetime_data():
     for eachstopUID in resultstopUID:
         # 於交通部資料中，偶爾會發生路線預計抵達車站時間缺漏，跳過該路線資料讀取
         if eachstopUID[0] not in stopBusTime:
-            print(eachstopUID[0])
             continue
         else:
             # 把routeUID放進returnData["data"][0]["routedata"] 當KEY

@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from module import cache
 from route.buslocationApi import buslocationApi
-from route.stoplocationApi import stoplocationApi
+from route.stopdataApi import stoplocationApi, stopsApi
 from route.estimatetimeApi import estimatetimeApi
 from route.routedataApi import routesApi, routeApi, routestatusApi
 
@@ -34,9 +34,15 @@ def stops_page():
     return render_template("stops.html")
 
 
+@app.route("/stop/<float:latitude>/<float:longitude>")
+def stop_page(latitude, longitude):
+    return render_template("stop.html")
+
+
 # API
 app.register_blueprint(buslocationApi, url_prefix="/api")
 app.register_blueprint(stoplocationApi, url_prefix="/api")
+app.register_blueprint(stopsApi, url_prefix="/api")
 app.register_blueprint(estimatetimeApi, url_prefix="/api")
 app.register_blueprint(routesApi, url_prefix="/api")
 app.register_blueprint(routeApi, url_prefix="/api")

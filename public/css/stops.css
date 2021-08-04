@@ -67,6 +67,12 @@ main{
     flex: auto;              /*flex:auto寬度自動延伸*/
     position: relative;     /*將地圖層當作基準元素，給location button擺放位置參考*/
 }
+/* map-stop-index */
+.map-stop-index{
+    background-color: transparent;
+    height: 10px;
+    line-height: 100%;
+}
 /* 自訂我的位置按鈕 */
 .locationBtn{
     position: absolute;
@@ -99,7 +105,7 @@ main{
 .searchType{
     background-color: #E8E8E8;
     color: #666666;
-    margin: 30px 20px;       /*上下30px 左右20px*/
+    margin: 15px 10px;       /*上下20px 左右10px*/
     border-radius: 5px;
 }
 .searchMehtod{
@@ -148,6 +154,56 @@ input[id = keyword]{
     color: #ffffff;
     cursor: pointer;                                    /*改變滑鼠指標*/
     padding: 0px;                                       /*取消btn物件預設padding值*/
+}
+/* stops data */
+.stopData{
+    margin: 10px;
+}
+.eachStopData{
+    position: relative;     /*當作基準元素給span覆蓋用*/
+    margin: 15px 0px;       /*上下10px 左右0px*/
+    display: flex;
+    min-height: 30px;
+    border: solid #dddddd 1px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 5px;
+}
+.stopUrlLink{
+    position: absolute;     /*設定讓span覆蓋整個li空間*/
+    width: 100%;            /*span高度 100% div*/
+    height: 100%;           /*span寬度 100% div*/
+    top: 0px;               /*起點左上角*/
+    left: 0px;
+    z-index: 1;             /*讓span向上浮一層*/
+}
+.stopIndex{
+    flex: none;             /*none要給寬度*/
+    width: 30px;
+    display: flex;          /*水平垂直置中*/
+    align-items: center;
+    justify-content: center;
+    background-color: #c5e6ff;
+    border-radius: 5px;
+}
+.stopName{
+    flex: auto;
+    margin: 0px 5px;
+    display: flex;          /*水平靠左垂直置中*/
+    align-items: center;
+    justify-content: flex-start;
+}
+.stopDistance{
+    flex: none;             /*none要給寬度*/
+    width: 100px;
+    display: flex;          /*水平垂直置中*/
+    align-items: center;
+    justify-content: center;
+    background-color: #ffcda8;
+    border-radius: 5px;
 }
 /* footer */
 footer{

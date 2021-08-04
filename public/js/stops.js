@@ -17,7 +17,18 @@ let views = {
     mymap: null,
     // 使用者選擇位置marker變數
     usermarker: null,
+    // 記錄使用者是否為第一次點擊地圖
     firstclick: true,
+    // stop icon變數
+    stopIcon: null,
+    // 初始化自訂icons
+    initStopIcon: function () {
+        // 車站icon
+        let stopphoto = L.Icon.extend({
+            options: { iconSize: [28, 28] }
+        });
+        this.stopIcon = new stopphoto({ iconUrl: "/image/bus_stop.png" });
+    },
     // 繪製地圖
     renderMap: function (lat, lon) {
         // 設定地圖參數
@@ -43,7 +54,7 @@ let views = {
             views.usermarker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(views.mymap);
             views.usermarker.bindTooltip("欲查詢位置", { permanent: true, direction: "right" });
             // 畫面移動到所點擊位置
-            views.mymap.flyTo([e.latlng.lat, e.latlng.lng], 18);
+            views.flyToSite([e.latlng.lat, e.latlng.lng], 18);
             // 將使用者欲查詢位置以文字顯示
             // 判斷是否為第一次點擊地圖，若為第一次先顯示網頁標籤內容
             if (views.firstclick) {
@@ -70,6 +81,101 @@ let views = {
     renderUserCheck: function () {
         const errorAddress = document.querySelector(".errorAddress");
         errorAddress.textContent = "請再次確認所輸入資訊";
+    },
+    // 顯示查詢結果
+    renderResult: function (data) {
+        // 清空地圖標記(如果有)，停止點擊監聽
+        if (views.usermarker) {
+            views.mymap.removeLayer(views.usermarker);
+        };
+        this.mymap.off("click");
+        // 以lat lng畫半徑300公尺圓
+        const circle = L.circle([data.selectLat, data.selectLng], { color: "#e60e14", fillColor: "#fbb7b9", fillOpacity: 0.3, radius: 300 }).addTo(this.mymap);
+        // 顯示使用者查詢位置marker，並移動地圖至該處
+        const searchLocation = L.marker([data.selectLat, data.selectLng]).addTo(this.mymap);
+        this.flyToSite(searchLocation.getLatLng(), 18);
+        // 清空右側面板資料，填入搜尋結果(經緯度or地址)
+        const searchSideDOM = document.querySelector(".searchSide");
+        searchSideDOM.innerHTML = "";
+        const searchResultDOM = document.createElement("section");
+        searchResultDOM.classList.add("searchType");
+        searchSideDOM.appendChild(searchResultDOM);
+        const titleDOM = document.createElement("div");
+        titleDOM.classList.add("searchContent");
+        titleDOM.textContent = "查詢位置";
+        searchResultDOM.appendChild(titleDOM);
+        if (data.method === "latlng") {
+            const lngDOM = document.createElement("div");
+            lngDOM.classList.add("searchContent");
+            lngDOM.textContent = "經度：" + data.selectLng;
+            const latDOM = document.createElement("div");
+            latDOM.classList.add("searchContent");
+            latDOM.textContent = "緯度：" + data.selectLat;
+            searchResultDOM.appendChild(lngDOM);
+            searchResultDOM.appendChild(latDOM);
+        } else {
+            const addressDOM = document.createElement("div");
+            addressDOM.classList.add("searchContent");
+            addressDOM.textContent = "地址：" + data.locationData;
+            searchResultDOM.appendChild(addressDOM);
+        };
+        // 站牌資訊填入地圖及右側面板
+        // 查無資料
+        if (data.stops === "無鄰近站牌資料") {
+            const noDataDOM = document.createElement("div");
+            noDataDOM.classList.add("searchTitle");
+            noDataDOM.textContent = "查無鄰近站牌資料";
+            searchSideDOM.appendChild(noDataDOM);
+        } else {
+            const stopDataDOM = document.createElement("section");
+            stopDataDOM.classList.add("stopData");
+            searchSideDOM.appendChild(stopDataDOM);
+            for (let i = 0; i < data.stops.length; i++) {
+                // 各站牌資料div
+                const eachStopDOM = document.createElement("div");
+                eachStopDOM.classList.add("eachStopData");
+                stopDataDOM.appendChild(eachStopDOM);
+                // 編號
+                const indexDOM = document.createElement("div");
+                indexDOM.classList.add("stopIndex");
+                indexDOM.textContent = i + 1;
+                eachStopDOM.appendChild(indexDOM);
+                // 站名
+                const nameDOM = document.createElement("div");
+                nameDOM.classList.add("stopName");
+                nameDOM.textContent = data.stops[i].stopname_tw;
+                eachStopDOM.appendChild(nameDOM);
+                // 距離
+                const distanceDOM = document.createElement("div");
+                distanceDOM.classList.add("stopDistance");
+                let distanceString = "距離"
+                if (data.stops[i].distance < 100) {
+                    distanceString = "距離 "
+                }
+                distanceDOM.textContent = distanceString + data.stops[i].distance + "公尺";
+                eachStopDOM.appendChild(distanceDOM);
+                // 超連結
+                const hyperStop = document.createElement("a");
+                hyperStop.href = "/stop/" + data.stops[i].latitude + "/" + data.stops[i].longitude;
+                hyperStop.target = "_blank";
+                const spanDOM = document.createElement("span");
+                spanDOM.classList.add("stopUrlLink");
+                hyperStop.appendChild(spanDOM);
+                eachStopDOM.appendChild(hyperStop);
+                // 地圖 stop markers
+                let stopmarker = L.marker([data.stops[i].latitude, data.stops[i].longitude], { icon: this.stopIcon }).addTo(this.mymap);
+                stopmarker.bindTooltip((i + 1).toString(), { permanent: true, direction: "top", className: "map-stop-index", offset: [2, -10] });
+                stopmarker.bindPopup(data.stops[i].stopname_tw + "<br>" + "地址: " + data.stops[i].address);
+                // 點擊站牌移動到該站位置
+                stopmarker.on("click", () => {
+                    this.flyToSite(stopmarker.getLatLng(), 18);
+                });
+            };
+        };
+    },
+    // 地圖中心移動到指定位置
+    flyToSite: function (latlng, zoomvalue) {
+        this.mymap.flyTo(latlng, zoomvalue);
     }
 }
 // Controllers
@@ -81,6 +187,8 @@ let controllers = {
     // 初始化
     init: function () {
         views.renderMap(25.046387, 121.516950);
+        // 初始化stop Icon
+        views.initStopIcon();
         views.showLocation();
         this.searchByLatLng();
         this.searchByAddress();
@@ -91,7 +199,9 @@ let controllers = {
     searchByLatLng: function () {
         const latlngSearch = document.getElementById("method1");
         latlngSearch.addEventListener("click", function () {
-            // API
+            models.getAPI(window.location.origin + "/api/stops?method=latlng&keyword=" + controllers.latitudeSelect + "," + controllers.longitudeSelect).then(() => {
+                views.renderResult(models.data.data[0]);
+            });
         });
     },
     // 監聽使用者點擊 地址搜尋方式的"開始搜尋"按鈕
@@ -104,7 +214,9 @@ let controllers = {
             if (address.length < 7) {
                 views.renderUserCheck();
             } else {
-                // API
+                models.getAPI(window.location.origin + "/api/stops?method=address&keyword=" + address).then(() => {
+                    views.renderResult(models.data.data[0]);
+                });
             };
         });
     },

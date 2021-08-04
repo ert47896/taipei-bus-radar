@@ -38,7 +38,7 @@ let views = {
         this.busIcon = new busphoto({ iconUrl: "/image/orange72.png" });
         // 車站icon
         let stopphoto = L.Icon.extend({
-            options: { iconSize: [20, 20] }
+            options: { iconSize: [24, 24] }
         });
         this.stopIcon = new stopphoto({ iconUrl: "/image/bus_stop.png" });
         // layer groups
@@ -180,7 +180,7 @@ let views = {
                 // 確認本次站牌direction改變更新資料
                 if (this.stopDirectionPre !== controllers.stopDirectionNow) {
                     // 標註車站序
-                    let marker = L.marker([data[index]["latitude"], data[index]["longitude"]], { icon: this.stopIcon }).bindTooltip((index + 1).toString(), { permanent: true, direction: "top", className: "map-stop-sequence" }).addTo(this.stoplayer);
+                    let marker = L.marker([data[index]["latitude"], data[index]["longitude"]], { icon: this.stopIcon }).bindTooltip((index + 1).toString(), { permanent: true, direction: "top", className: "map-stop-sequence", offset: [2, -8] }).addTo(this.stoplayer);
                     marker.bindPopup(data[index]["stopname"] + "<br>" + "地址: " + data[index]["address"]);
                     // 車站被點擊設定為地圖中心
                     marker.on("click", () => {

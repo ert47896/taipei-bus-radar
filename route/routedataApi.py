@@ -17,8 +17,9 @@ routestatusApi = Blueprint("routeStatusApi", __name__)
 def get_routedata():
     # Access data from mysql
     keyword = request.args.get("keyword")
-    selectSql = f"SELECT routename_tw FROM busroute WHERE routename_tw LIKE '%{keyword}%' ORDER BY routename_tw"
-    result = mysql.readData(selectSql)
+    selectSql = "SELECT routename_tw FROM busroute WHERE routename_tw LIKE %s ORDER BY routename_tw"
+    selectValue = ("%"+keyword+"%",)
+    result = mysql.readData(selectSql, selectValue)
     returnData = dict()
     # 查無路線資料
     if len(result) == 0:
@@ -64,8 +65,9 @@ def get_routedata():
 @routeApi.route("/route/<routename>", methods=["GET"])
 def get_each_routedata(routename):
     # Access data from mysql
-    selectSql = f"SELECT b.routename_tw, ST_AsText(b.linestrings), b.depname_tw, b.destname_tw, b.routeimgurl, c.oname_tw, c.webpage FROM operatorofroute AS a JOIN busroute AS b ON a.routeUID = b.routeUID JOIN operator AS c ON a.operatorID = c.operatorID WHERE b.routename_tw = '{routename}'"
-    result = mysql.readData(selectSql)
+    selectSql = "SELECT b.routename_tw, ST_AsText(b.linestrings), b.depname_tw, b.destname_tw, b.routeimgurl, c.oname_tw, c.webpage FROM operatorofroute AS a JOIN busroute AS b ON a.routeUID = b.routeUID JOIN operator AS c ON a.operatorID = c.operatorID WHERE b.routename_tw = %s"
+    selectValue = (routename,)
+    result = mysql.readData(selectSql, selectValue)
     returnData = dict()
     returnData["data"] = dict()
     # 資料放入回傳字典除營運者資料(c.oname_tw, c.webpage)，因為一條路線可能多個業者經營，所以另外處理
@@ -97,9 +99,9 @@ def get_each_routedata(routename):
 @routestatusApi.route("/routestatus/<routename>", methods=["GET"])
 def get_routestatus(routename):
     t1 = time.time()
-    selectSql = f"SELECT a.stopUID, d.routeUID, b.stopname_tw, b.address, ST_X(b.coordinate), ST_Y(b.coordinate), c.direction FROM stopofstation AS a JOIN stationinfo AS b ON a.stationUID = b.stationUID JOIN stopofroute AS c ON a.stopUID = c.stopUID JOIN busroute AS d ON c.routeUID = d.routeUID WHERE d.routename_tw = '{routename}'"
-    result = mysql.readData(selectSql)
-
+    selectSql = "SELECT a.stopUID, d.routeUID, b.stopname_tw, b.address, ST_X(b.coordinate), ST_Y(b.coordinate), c.direction FROM stopofstation AS a JOIN stationinfo AS b ON a.stationUID = b.stationUID JOIN stopofroute AS c ON a.stopUID = c.stopUID JOIN busroute AS d ON c.routeUID = d.routeUID WHERE d.routename_tw = %s"
+    selectValue = (routename,)
+    result = mysql.readData(selectSql, selectValue)
     returnData = dict()
     # key=0 去程資料，key=1 返程資料
     returnData["data"] = {
