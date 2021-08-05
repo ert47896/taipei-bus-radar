@@ -71,6 +71,12 @@ main{
     height: 10px;
     line-height: 100%;
 }
+.map-stop-select{
+    background-color:  transparent;
+    height: 10px;
+    font-weight: bold;
+    line-height: 100%;
+}
 /* main-aside-stopAllRoutes */
 .stopAllRoutes{
     flex: none;             /*flex:none設定固定寬度*/
@@ -80,7 +86,7 @@ main{
 }
 /* main-aside(detail+stopshow) 站牌*/
 .stopData{
-    margin: 10px 10px 0px 20px;    /*設定上右下左外邊界*/
+    margin: 10px 20px 0px 20px;    /*設定上右下左外邊界*/
     font-size: 30px;
     font-weight: bold;
 }
@@ -88,11 +94,11 @@ main{
     color: #e60e14;
 }
 .allRoutes{
-    margin: 0px 10px 0px 15px;    /*設定上右下左外邊界*/
+    margin: 0px 20px 0px 15px;    /*設定上右下左外邊界*/
     display: flex;
     justify-content: space-between;     /*左右物件靠邊 均分間隔*/
     flex-wrap: wrap;                    /*物件自動換行*/
-    width: 425px;
+    width: 415px;
     color: #ffffff;
 }
 .routeName{
@@ -116,7 +122,7 @@ main{
 }
 /* main-aside(detail+stopshow) 路線資訊*/
 .routeStopsData{
-    margin: 5px 10px 10px 15px;    /*設定上右下左外邊界*/
+    margin: 5px 20px 10px 15px;    /*設定上右下左外邊界*/
     border-top: 2px solid #dddddd;  /*設定物件框線樣式*/
 }
 .routeStopAll{

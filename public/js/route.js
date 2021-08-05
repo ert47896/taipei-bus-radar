@@ -29,7 +29,7 @@ let views = {
     stopDirectionPre: null,
     // stop marks
     stopMarks: [],
-    // 初始化自訂icons、layer groups
+    // 初始化自訂icons, layer groups
     initMapItems: function () {
         // 公車icon
         let busphoto = L.Icon.extend({
@@ -121,7 +121,7 @@ let views = {
     },
     // 標註車站序、繪製車站資料與公車在車站位置
     renderStopData: function (data) {
-        // 確認本次站牌direction改變更新資料
+        // 確認本次站牌direction改變清空前次資料
         if (this.stopDirectionPre !== controllers.stopDirectionNow) {
             // 清空地圖站牌序列、stop marks
             this.stoplayer.clearLayers();
@@ -177,7 +177,7 @@ let views = {
                         };
                     });
                 };
-                // 確認本次站牌direction改變更新資料
+                // 確認本次站牌direction改變更新站牌marker資料
                 if (this.stopDirectionPre !== controllers.stopDirectionNow) {
                     // 標註車站序
                     let marker = L.marker([data[index]["latitude"], data[index]["longitude"]], { icon: this.stopIcon }).bindTooltip((index + 1).toString(), { permanent: true, direction: "top", className: "map-stop-sequence", offset: [2, -8] }).addTo(this.stoplayer);
@@ -188,10 +188,8 @@ let views = {
                     });
                     this.stopMarks.push(marker);
                 };
-                // 點擊各站牌資訊畫面移動到該站位置
-                eachStopDOM.addEventListener("click", () => {
-                    this.flyToSite(this.stopMarks[index].getLatLng(), 17);
-                });
+                // 建立事件監聽-點擊各站牌資訊畫面移動到該站位置
+                controllers.stopEvent(eachStopDOM, index);
             };
         };
         // 更新目前地圖上站牌direction
@@ -212,7 +210,7 @@ let controllers = {
     // 初始化
     init: function () {
         views.renderMap(25.046387, 121.516950);
-        // 初始化Icons
+        // 初始化icons, group layer
         views.initMapItems();
         // 讀取routeAPI資料並繪製
         // 以decodeURI()將url子路徑解碼(部分路線非全數字)
@@ -295,6 +293,11 @@ let controllers = {
         timeDOM.innerHTML = "";
         timeDOM.textContent = hour + ":" + minute + ":" + second;
         setTimeout("controllers.timeNow()", 1000);
+    },
+    stopEvent: function (objectDOM, index) {
+        objectDOM.addEventListener("click", () => {
+            views.flyToSite(views.stopMarks[index].getLatLng(), 17);
+        });
     }
 }
 controllers.init();     // 載入頁面初始化

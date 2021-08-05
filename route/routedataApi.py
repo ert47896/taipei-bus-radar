@@ -18,7 +18,7 @@ def get_routedata():
     # Access data from mysql
     keyword = request.args.get("keyword")
     selectSql = "SELECT routename_tw FROM busroute WHERE routename_tw LIKE %s ORDER BY routename_tw"
-    selectValue = ("%"+keyword+"%",)
+    selectValue = ("%" + keyword + "%",)
     result = mysql.readData(selectSql, selectValue)
     returnData = dict()
     # 查無路線資料
@@ -98,7 +98,6 @@ def get_each_routedata(routename):
 
 @routestatusApi.route("/routestatus/<routename>", methods=["GET"])
 def get_routestatus(routename):
-    t1 = time.time()
     selectSql = "SELECT a.stopUID, d.routeUID, b.stopname_tw, b.address, ST_X(b.coordinate), ST_Y(b.coordinate), c.direction FROM stopofstation AS a JOIN stationinfo AS b ON a.stationUID = b.stationUID JOIN stopofroute AS c ON a.stopUID = c.stopUID JOIN busroute AS d ON c.routeUID = d.routeUID WHERE d.routename_tw = %s"
     selectValue = (routename,)
     result = mysql.readData(selectSql, selectValue)
@@ -175,8 +174,6 @@ def get_routestatus(routename):
                 for eachstop in returnData["data"][1]["StopsData"]:
                     if eachstop["stopUID"] == busonStopUID:
                         eachstop["platenumb"].append(eachbusonstop["platenumb"])
-    t2 = time.time()
-    print("routestatusApi:", t2 - t1)
     return jsonify(returnData), 200
 
 
@@ -184,7 +181,6 @@ def get_routestatus(routename):
 def get_bus_on_stop():
     from requests import request
 
-    t3 = time.time()
     # Access data from MOTC ptx
     req_url = "https://ptx.transportdata.tw/MOTC/v2/Bus/RealTimeNearStop/City/Taipei?$select=PlateNumb%2C%20DutyStatus%2C%20RouteUID%2C%20Direction%2C%20StopUID&$filter=DutyStatus%20eq%201%20or%20DutyStatus%20eq%200&$format=JSON"
     response = request("get", req_url, headers=motcAPI.authHeader())
@@ -211,6 +207,4 @@ def get_bus_on_stop():
             outfile.writelines(errorStr)
             outfile.writelines("ptx response:")
             outfile.writelines(response)
-    t4 = time.time()
-    print("routedataCached: ", t4 - t3)
     return returnData

@@ -156,7 +156,7 @@ let views = {
                 eachStopDOM.appendChild(distanceDOM);
                 // 超連結
                 const hyperStop = document.createElement("a");
-                hyperStop.href = "/stop/" + data.stops[i].latitude + "/" + data.stops[i].longitude;
+                hyperStop.href = "/stop/" + data.stops[i].stopname_tw + "/" + data.stops[i].latitude + "/" + data.stops[i].longitude;
                 hyperStop.target = "_blank";
                 const spanDOM = document.createElement("span");
                 spanDOM.classList.add("stopUrlLink");

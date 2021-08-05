@@ -10,11 +10,9 @@ estimatetimeApi = Blueprint("estimatetimeApi", __name__)
 
 @estimatetimeApi.route("/estimatetime", methods=["GET"])
 def get_estimatetime_data():
-    t1 = time.time()
     latitude = request.args.get("latitude")
     longitude = request.args.get("longitude")
     stopBusTime = get_stop_estimate_time()
-    t2 = time.time()
     returnData = dict()
     returnData["data"] = []
     # 找出所有該車站的站牌資料
@@ -78,9 +76,6 @@ def get_estimatetime_data():
             "tw": routeData[3],
             "en": routeData[4],
         }
-    t3 = time.time()
-    print(f"estimatetimeAPI time: {t2-t1}")
-    print(f"estimatetimeAPIClean time: {t3-t2}")
     return jsonify(returnData), 200
 
 
@@ -88,7 +83,6 @@ def get_estimatetime_data():
 def get_stop_estimate_time():
     from requests import request
 
-    t4 = time.time()
     # Access data from MOTC ptx
     req_url = "https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei?$select=StopUID%2C%20RouteUID%2C%20Direction%2C%20EstimateTime%2C%20StopStatus&$format=JSON"
     response = request("get", req_url, headers=motcAPI.authHeader())
@@ -113,6 +107,4 @@ def get_stop_estimate_time():
             outfile.writelines(errorStr)
             outfile.writelines("ptx response:")
             outfile.writelines(response)
-    t5 = time.time()
-    print("estimatetimeAPI cache REAL", t5 - t4)
     return stopBusTime

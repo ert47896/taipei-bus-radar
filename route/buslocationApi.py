@@ -10,19 +10,14 @@ buslocationApi = Blueprint("buslocationApi", __name__)
 
 @buslocationApi.route("/buslocation", methods=["GET"])
 def get_bus_location():
-    t3 = time.time()
     # 取得所有路線公車位置資料
     returnData = get_route_bus_location()
-
-    t4 = time.time()
-    print("buslocationDealCache: ", t4 - t3)
     return jsonify(returnData), 200
 
 
 @cache.cached(timeout=15, key_prefix="bus_location")
 def get_route_bus_location():
     # Access data from MOTC ptx
-    t1 = time.time()
     req_url = "https://ptx.transportdata.tw/MOTC/v2/Bus/RealTimeByFrequency/City/Taipei?$select=PlateNumb%2C%20RouteUID%2C%20BusPosition%2C%20Speed%2C%20Direction&$filter=DutyStatus%20eq%201%20or%20DutyStatus%20eq%200&$format=JSON"
     response = request("get", req_url, headers=motcAPI.authHeader())
     response = response.json()
@@ -66,6 +61,4 @@ def get_route_bus_location():
             "destname_tw": routeData[5],
             "destname_en": routeData[6],
         }
-    t2 = time.time()
-    print("buslocationAPIReal: ", t2 - t1)
     return returnData

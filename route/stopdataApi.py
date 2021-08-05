@@ -8,9 +8,10 @@ from dotenv import load_dotenv
 load_dotenv()
 # 300公尺轉換為經緯度約為0.003度
 diffRange = 0.003
-gmaps = googlemaps.Client(key=os.getenv("gecode_key"))
+gmaps = googlemaps.Client(key=os.getenv("geocode_key"))
 stoplocationApi = Blueprint("stoplocationApi", __name__)
 stopsApi = Blueprint("stopsApi", __name__)
+stopApi = Blueprint("stopApi", __name__)
 
 
 @stoplocationApi.route("/stoplocation", methods=["GET"])
@@ -80,4 +81,30 @@ def get_stops_data():
                 }
                 temp["stops"].append(stopData)
     returnData["data"].append(temp)
+    return jsonify(returnData), 200
+
+
+@stopApi.route("/stop", methods=["GET"])
+def get_stop_data():
+    # 取得站牌經緯度
+    lat = request.args.get("latitude")
+    lng = request.args.get("longitude")
+    returnData = dict()
+    returnData["data"] = []
+    # 由資料庫取出經過該站牌路線資料
+    sqlSelect = "SELECT a.routename_tw, a.depname_tw, a.destname_tw, b.direction FROM busroute AS a \
+        JOIN stopofroute AS b ON a.routeUID = b.routeUID WHERE b.stopUID IN (SELECT StopUID FROM stopofstation \
+        WHERE stationUID = (SELECT stationUID FROM stationinfo WHERE coordinate = POINT(%s, %s)));"
+    sqlValue = (lat, lng)
+    routeResult = mysql.readData(sqlSelect, sqlValue)
+    if len(routeResult) == 0:
+        returnData["data"].append({"error": "此站牌查無路線經過"})
+    for route in routeResult:
+        temp = {
+            "routename": route[0],
+            "depname_tw": route[1],
+            "destname_tw": route[2],
+            "direction": route[3],
+        }
+        returnData["data"].append(temp)
     return jsonify(returnData), 200

@@ -31,7 +31,7 @@ let views = {
     // 自訂icons
     initIcons: function () {
         let busIcon = L.Icon.extend({
-            options: { iconSize: [24, 24] }
+            options: { iconSize: [22, 22] }
         });
         this.orangeBus = new busIcon({ iconUrl: "/image/orange72.png" });
         let busStop = L.Icon.extend({
