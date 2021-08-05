@@ -93,7 +93,7 @@ let views = {
         const circle = L.circle([data.selectLat, data.selectLng], { color: "#e60e14", fillColor: "#fbb7b9", fillOpacity: 0.3, radius: 300 }).addTo(this.mymap);
         // 顯示使用者查詢位置marker，並移動地圖至該處
         const searchLocation = L.marker([data.selectLat, data.selectLng]).addTo(this.mymap);
-        this.flyToSite(searchLocation.getLatLng(), 18);
+        this.flyToSite(searchLocation.getLatLng(), 17);
         // 清空右側面板資料，填入搜尋結果(經緯度or地址)
         const searchSideDOM = document.querySelector(".searchSide");
         searchSideDOM.innerHTML = "";

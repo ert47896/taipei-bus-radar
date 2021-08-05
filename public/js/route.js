@@ -13,7 +13,7 @@ let models = {
 }
 // Views
 let views = {
-    // 圖層變數
+    // 地圖變數
     mymap: null,
     // bus icon變數
     busIcon: null,
