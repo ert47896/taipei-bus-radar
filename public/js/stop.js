@@ -27,8 +27,10 @@ let views = {
     stoplayer: null,
     // 記錄公車是否有在地圖上
     busonmap: [],
-    // 前次的route name資料
+    // 前次的route name
     routeNamePre: null,
+    // 前次的route 營運方向
+    directionPre: null,
     // stop marks
     stopMarks: [],
     // 初始化自訂icons, layer groups
@@ -124,8 +126,8 @@ let views = {
     },
     // 標註車站序、繪製車站資料與公車在車站位置
     renderStopData: function (data) {
-        // 確認本次route name改變清空前次資料
-        if (this.routeNamePre !== controllers.routeNameNow) {
+        // 確認本次route name改變清空前次資料，針對路線名稱一樣透過營運方向確認
+        if ((this.routeNamePre !== controllers.routeNameNow) || (this.directionPre !== controllers.directionNow)) {
             // 清空地圖站牌序列、stop marks
             this.stoplayer.clearLayers();
             this.stopMarks = [];
@@ -180,8 +182,8 @@ let views = {
                         };
                     });
                 };
-                // 確認本次route name改變更新地圖站牌marker資料
-                if (this.routeNamePre !== controllers.routeNameNow) {
+                // 確認本次route name改變更新地圖站牌marker資料，針對路線名稱一樣透過營運方向確認
+                if ((this.routeNamePre !== controllers.routeNameNow) || (this.directionPre !== controllers.directionNow)) {
                     // 標註車站序
                     let marker = L.marker([data[index]["latitude"], data[index]["longitude"]], { icon: this.stopIcon }).addTo(this.stoplayer);
                     // 如該站牌是目標站牌，顯示更詳細資訊
@@ -202,8 +204,9 @@ let views = {
                 controllers.stopClick(eachStopDOM, index);
             };
         };
-        // 更新目前地圖上站牌資料的route name
+        // 更新目前地圖上站牌資料的route name與營運方向
         this.routeNamePre = controllers.routeNameNow;
+        this.directionPre = controllers.directionNow;
     },
     flyToSite: function (latlng, zoomvalue) {
         this.mymap.flyTo(latlng, zoomvalue);
@@ -228,6 +231,8 @@ let controllers = {
     renewRouteStatusInterval: null,
     // 目前選擇的route name
     routeNameNow: null,
+    // 目前選擇的route營運方向
+    directionNow: null,
     // 初始化
     init: function () {
         // 取得站牌名 經緯度
@@ -251,6 +256,7 @@ let controllers = {
                 views.renderRouteData(models.data.data);
                 // 初始頁面顯示第一組路線資料
                 this.routeNameNow = models.data.data[0].routename;
+                this.directionNow = models.data.data[0].direction;
                 // 改變按鈕顏色
                 const allRouteDOM = document.querySelectorAll(".routeName");
                 allRouteDOM[0].classList.add("route-show");
@@ -289,8 +295,9 @@ let controllers = {
     },
     // 讀取routestatus資料並繪製於地圖及右側資訊欄
     showRouteStatusData: function (routeName, direction) {
-        // 將此次route name儲存提供views判斷更新資料時是否要重繪地圖上站牌資料
+        // 將此次route name與營運方向儲存提供views判斷更新資料時是否要重繪地圖上站牌資料
         this.routeNameNow = routeName;
+        this.directionNow = direction;
         // 向routeAPI讀取路線相關車輛 進站狀態資料
         models.getAPI(window.location.origin + "/api/routestatus/" + routeName).then(() => {
             // 只取用單一方向資料

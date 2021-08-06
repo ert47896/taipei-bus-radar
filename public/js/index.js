@@ -28,6 +28,10 @@ let views = {
     stoplayer: null,
     // 到站時間面板狀態變數 true有顯示 false未顯示
     estimateTimePanel: false,
+    // 呈現站牌資訊緯度
+    stopLatitude: null,
+    // 呈現站牌資訊經度
+    stopLongitude: null,
     // 自訂icons
     initIcons: function () {
         let busIcon = L.Icon.extend({
@@ -96,6 +100,8 @@ let views = {
             // 點擊呼叫函式顯示到站時間，且地圖中心設定為車站位置
             marker.on("click", () => {
                 controllers.showEstimateTime(marker.getLatLng().lat, marker.getLatLng().lng);
+                this.stopLatitude = marker.getLatLng().lat;
+                this.stopLongitude = marker.getLatLng().lng;
                 this.mymap.flyTo(marker.getLatLng());
             });
         };
@@ -122,16 +128,24 @@ let views = {
         const deleteBtn = document.createElement("div");
         deleteBtn.classList.add("closeBtn");
         asideDOM.appendChild(deleteBtn);
-        // 建立車站名稱欄
+        // 建立站牌名稱欄
         const titleDOM = document.createElement("section");
         titleDOM.classList.add("stopTitle");
         asideDOM.appendChild(titleDOM);
-        // 於車站名稱欄填入內容
+        // 於站牌名稱欄填入內容
         for (const [key, routename] of Object.entries(data[1]["stopname"])) {
             const stopnametwDOM = document.createElement("div");
             stopnametwDOM.textContent = routename;
             titleDOM.appendChild(stopnametwDOM);
         };
+        // 建立站牌超連結
+        const stopHyper = document.createElement("a");
+        stopHyper.href = "/stop/" + data[1]["stopname"].tw + "/" + this.stopLatitude + "/" + this.stopLongitude;
+        stopHyper.target = "_blank";
+        const spanElement = document.createElement("span");
+        spanElement.classList.add("domUrlLink");
+        stopHyper.appendChild(spanElement);
+        titleDOM.appendChild(stopHyper);
         Object.entries(data[0]["routedata"]).forEach(([key, routevalue]) => {
             const routeDataDOM = document.createElement("section");
             routeDataDOM.classList.add("estimateTimeContainer");
@@ -153,6 +167,14 @@ let views = {
             const routeENDOM = document.createElement("div");
             routeENDOM.textContent = routeEN;
             estimateRouteDOM.appendChild(routeENDOM);
+            // 路線超連結
+            const routeHyper = document.createElement("a");
+            routeHyper.href = "/route/" + routevalue.routename.tw;
+            routeHyper.target = "_blank";
+            const spanHyper = document.createElement("span");
+            spanHyper.classList.add("domUrlLink");
+            routeHyper.appendChild(spanHyper);
+            estimateRouteDOM.appendChild(routeHyper);
             // 針對進站中與2分鐘內換色
             if (routevalue.estimateStatus === "進站中") {
                 estimateStatusDOM.classList.add("busapproach");

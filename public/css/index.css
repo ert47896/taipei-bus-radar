@@ -148,6 +148,7 @@ main{
     color: #ffffff;
 }
 .estimateTimeRoute{
+    position:relative;              /*當作基準元素給span覆蓋用*/
     flex: auto;
     line-height: 150%;
     border-bottom: 2px solid #dddddd;    /*設定物件底線樣式*/
@@ -157,6 +158,14 @@ main{
 }
 .estimateTimeRoute-busapproach{
     border-bottom: 2px solid #ed0000;
+}
+.domUrlLink{
+    position: absolute;     /*設定讓span覆蓋整個li空間*/
+    width: 100%;            /*span高度 100% div*/
+    height: 100%;           /*span寬度 100% div*/
+    top: 0px;               /*起點左上角*/
+    left: 0px;
+    z-index: 1;             /*讓span向上浮一層*/
 }
 /* footer */
 footer{
