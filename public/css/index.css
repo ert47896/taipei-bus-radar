@@ -105,6 +105,7 @@ main{
     background-repeat: no-repeat;                       /*背景圖不要重複出現*/
     background-position: 50% 50%;                       /*背景圖置於容器中間*/
     cursor: pointer;
+    z-index: 10;
 }
 /* estimate time side - section */
 .stopTitle{
