@@ -113,7 +113,7 @@ let views = {
         this.buslayer.clearLayers();
         data.forEach((eachBus) => {
             let marker = L.marker([eachBus["latitude"], eachBus["longitude"]], { icon: this.busIcon }).bindTooltip(eachBus["platenumb"], { direction: "top" }).addTo(this.buslayer);
-            marker.bindPopup("車牌(Platenumber): " + eachBus["platenumb"] + "<br>" + "目前時速(Speed): " + eachBus["speed"] + " km/hr");
+            marker.bindPopup("車牌(Platenumber): " + eachBus["platenumb"] + "<br>" + "目前時速(Speed): " + eachBus["speed"] + " km/hr", { className: "icon-click-show" });
             // 點擊地圖中心設定為車輛位置
             marker.on("click", () => {
                 this.mymap.flyTo(marker.getLatLng(), 15);
@@ -184,12 +184,13 @@ let views = {
                 if (this.routeNamePre !== controllers.routeNameNow) {
                     // 標註車站序
                     let marker = L.marker([data[index]["latitude"], data[index]["longitude"]], { icon: this.stopIcon }).addTo(this.stoplayer);
+                    // 如該站牌是目標站牌，顯示更詳細資訊
                     if ((data[index]["latitude"] == Number(controllers.latitude)) && (data[index]["longitude"] == Number(controllers.longitude))) {
                         marker.bindTooltip((index + 1).toString() + " " + data[index]["stopname"], { permanent: true, direction: "top", className: "map-stop-select", offset: [2, -8] });
                     } else {
                         marker.bindTooltip((index + 1).toString(), { permanent: true, direction: "top", className: "map-stop-sequence", offset: [2, -8] });
                     }
-                    marker.bindPopup(data[index]["stopname"] + "<br>" + "地址: " + data[index]["address"]);
+                    marker.bindPopup(data[index]["stopname"] + "<br>" + "地址: " + data[index]["address"], { className: "icon-click-show" });
                     // 車站被點擊設定為地圖中心
                     marker.on("click", () => {
                         this.flyToSite(marker.getLatLng(), 17);
@@ -249,6 +250,7 @@ let controllers = {
                 // 繪製經過路線資料
                 views.renderRouteData(models.data.data);
                 // 初始頁面顯示第一組路線資料
+                this.routeNameNow = models.data.data[0].routename;
                 // 改變按鈕顏色
                 const allRouteDOM = document.querySelectorAll(".routeName");
                 allRouteDOM[0].classList.add("route-show");

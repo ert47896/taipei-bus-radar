@@ -76,6 +76,13 @@ main{
     height: 10px;
     font-weight: bold;
     line-height: 100%;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+/* map-icon-click */
+.icon-click-show{
+    font-size: 16px;
 }
 /* main-aside-stopAllRoutes */
 .stopAllRoutes{

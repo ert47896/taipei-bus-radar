@@ -110,7 +110,7 @@ let views = {
         this.buslayer.clearLayers();
         data.forEach((eachBus) => {
             let marker = L.marker([eachBus["latitude"], eachBus["longitude"]], { icon: this.busIcon }).bindTooltip(eachBus["platenumb"], { direction: "top" }).addTo(this.buslayer);
-            marker.bindPopup("車牌(Platenumber): " + eachBus["platenumb"] + "<br>" + "目前時速(Speed): " + eachBus["speed"] + " km/hr");
+            marker.bindPopup("車牌(Platenumber): " + eachBus["platenumb"] + "<br>" + "目前時速(Speed): " + eachBus["speed"] + " km/hr", { className: "icon-click-show" });
             // 點擊地圖中心設定為車輛位置
             marker.on("click", () => {
                 this.mymap.flyTo(marker.getLatLng(), 15);
@@ -181,7 +181,7 @@ let views = {
                 if (this.stopDirectionPre !== controllers.stopDirectionNow) {
                     // 標註車站序
                     let marker = L.marker([data[index]["latitude"], data[index]["longitude"]], { icon: this.stopIcon }).bindTooltip((index + 1).toString(), { permanent: true, direction: "top", className: "map-stop-sequence", offset: [2, -8] }).addTo(this.stoplayer);
-                    marker.bindPopup(data[index]["stopname"] + "<br>" + "地址: " + data[index]["address"]);
+                    marker.bindPopup(data[index]["stopname"] + "<br>" + "地址: " + data[index]["address"], { className: "icon-click-show" });
                     // 車站被點擊設定為地圖中心
                     marker.on("click", () => {
                         this.flyToSite(marker.getLatLng(), 17);

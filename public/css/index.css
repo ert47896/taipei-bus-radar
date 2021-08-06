@@ -82,6 +82,10 @@ main{
     border: 2px solid #bbbbbb;
     border-radius: 2px;
 }
+/* bus click show */
+.icon-click-show{
+    font-size: 16px;
+}
 /* estimate time side */
 .estimateTimeSide{
     overflow-y: auto;       /*內容超過物件高度，以卷軸隱藏*/

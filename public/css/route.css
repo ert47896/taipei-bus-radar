@@ -71,6 +71,10 @@ main{
     height: 10px;
     line-height: 100%;
 }
+/* map-icon-click */
+.icon-click-show{
+    font-size: 16px;
+}
 /* main-aside(detail+stopshow) */
 .routeStopSide{
     flex: none;                     /*flex:none設定固定寬度*/

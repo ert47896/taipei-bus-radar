@@ -64,17 +64,19 @@ let views = {
         for (const [key, busData] of Object.entries(data)) {
             busData["OperateBus"].forEach((eachBus) => {
                 let marker = L.marker([eachBus["latitude"], eachBus["longitude"]], { icon: this.orangeBus }).bindTooltip(busData["routename"]["tw"] + "<br>" + eachBus["platenumb"]).addTo(this.buslayer);
-                if (eachBus["direction"] === 0) {
-                    marker.bindPopup(busData["routename"]["tw"] + "<br>" + busData["depdestname"]["depname_tw"] + " 往 " +
-                        busData["depdestname"]["destname_tw"] + "<br>" + busData["routename"]["en"] + "<br>" + busData["depdestname"]["depname_en"] +
-                        " To " + busData["depdestname"]["destname_en"] + "<br>" + "車牌(Platenumber): " + eachBus["platenumb"] + "<br>" +
-                        "目前時速(Speed): " + eachBus["speed"] + " km/hr");
-                } else {
-                    marker.bindPopup(busData["routename"]["tw"] + "<br>" + busData["depdestname"]["destname_tw"] + " 往 " +
-                        busData["depdestname"]["depname_tw"] + "<br>" + busData["routename"]["en"] + "<br>" + busData["depdestname"]["destname_en"] +
-                        " To " + busData["depdestname"]["depname_en"] + "<br>" + "車牌(Platenumber): " + eachBus["platenumb"] + "<br>" +
-                        "目前時速(Speed): " + eachBus["speed"] + " km/hr");
-                };
+                // 如果為返程將起訖點互換
+                if (eachBus["direction"] === 1) {
+                    const temp = busData["depdestname"]["depname_tw"];
+                    const tempEnglish = busData["depdestname"]["depname_en"];
+                    busData["depdestname"]["depname_tw"] = busData["depdestname"]["destname_tw"];
+                    busData["depdestname"]["depname_en"] = busData["depdestname"]["destname_en"];
+                    busData["depdestname"]["destname_tw"] = temp;
+                    busData["depdestname"]["destname_en"] = tempEnglish;
+                }
+                marker.bindPopup(busData["routename"]["tw"] + "<br>" + busData["depdestname"]["depname_tw"] + " 往 " +
+                    busData["depdestname"]["destname_tw"] + "<br>" + busData["routename"]["en"] + "<br>" + busData["depdestname"]["depname_en"] +
+                    " To " + busData["depdestname"]["destname_en"] + "<br>" + "車牌(Platenumber): " + eachBus["platenumb"] + "<br>" +
+                    "目前時速(Speed): " + eachBus["speed"] + " km/hr", { className: "icon-click-show" });
                 totalOperate += 1;
             });
         };
@@ -90,7 +92,7 @@ let views = {
         this.stoplayer = L.layerGroup().addTo(this.mymap);
         for (let i = 0; i < data.length; i++) {
             let marker = L.marker([data[i]["latitude"], data[i]["longitude"]], { icon: this.stopIcon }).addTo(this.stoplayer);
-            marker.bindPopup(data[i]["stopname"]["tw"] + "<br>" + data[i]["stopname"]["en"] + "<br>" + "地址: " + data[i]["address"]);
+            marker.bindPopup(data[i]["stopname"]["tw"] + "<br>" + data[i]["stopname"]["en"] + "<br>" + "地址: " + data[i]["address"], { className: "icon-click-show" });
             // 點擊呼叫函式顯示到站時間，且地圖中心設定為車站位置
             marker.on("click", () => {
                 controllers.showEstimateTime(marker.getLatLng().lat, marker.getLatLng().lng);
