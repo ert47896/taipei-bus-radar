@@ -109,6 +109,7 @@ main{
 }
 /* estimate time side - section */
 .stopTitle{
+    position:relative;              /*當作基準元素給span覆蓋用*/
     padding: 15px;                  /*設定內邊界*/
     margin: 10px 10px 10px 15px;    /*設定上右下左外邊界*/
     display: flex;
