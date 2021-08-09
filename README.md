@@ -21,7 +21,7 @@ Taipei Bus Radar網站：https://bus.taipeilife.info/<br>
 * SSL憑證實踐HTTPS
 
 ## 系統架構圖
-![image](https://user-images.githubusercontent.com/24973056/128684074-fb6980cc-c33c-4de4-a297-cf6f486c8b92.png)
+![image](https://user-images.githubusercontent.com/24973056/128721590-5598f6d3-4748-4116-be40-3b8b1ddf0759.png)
 
 ## MySQL資料庫架構
 ![image](https://user-images.githubusercontent.com/24973056/128684156-398f38ac-8a9b-481c-afab-85fcabc10225.png)
