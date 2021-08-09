@@ -12,13 +12,13 @@ Taipei Bus Radar網站：https://bus.taipeilife.info/<br>
 
 ## 使用技術
 * Python Flask
-* 採MVC架構編寫Javascript
-* 應用Leaflet構建網頁地圖
-* 使用MySQL及Flask-caching儲存資料
-* 採RESTful架構設計網站API
-* 運用Google Geocoding API進行地址反查經緯度資料
-* 部署網站於AWS EC2並運用nginx反向代理
-* SSL憑證實踐HTTPS
+* 採 MVC 架構編寫 Javascript
+* 應用 Leaflet 構建網頁地圖
+* 使用 MySQL 及 Flask-caching 儲存資料
+* 採 RESTful 架構設計網站 API
+* 運用 Google Geocoding API 進行地址反查經緯度資料
+* 部署網站於 AWS EC2 並運用 Nginx 反向代理
+* SSL 憑證實踐 HTTPS
 
 ## 系統架構圖
 ![image](https://user-images.githubusercontent.com/24973056/128721590-5598f6d3-4748-4116-be40-3b8b1ddf0759.png)
