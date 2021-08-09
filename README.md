@@ -33,12 +33,7 @@ Taipei Bus Radar網站：https://bus.taipeilife.info/<br>
 
 1. 點擊可移動地圖至使用者位置(需開啟定位權限)
 2. 點選顯示公車行駛資訊
-
-![image](https://user-images.githubusercontent.com/24973056/128689559-ede95b95-cc55-4af4-a8e7-6f8de71fade1.png)
-
 3. 點選查看公車預計抵達站牌時間
-
-![image](https://user-images.githubusercontent.com/24973056/128689898-aa9e419f-1294-43b4-93e5-47c984825d4d.png)
 
 ### 路線資訊頁面
 
@@ -47,9 +42,17 @@ Taipei Bus Radar網站：https://bus.taipeilife.info/<br>
 1. 點擊顯示業者提供路線簡圖
 2. 點擊營運業者網站
 3. 點擊切換去程、返程路線及營運車輛資訊
-
-![image](https://user-images.githubusercontent.com/24973056/128700738-9e108a01-d31c-4b6f-99f2-69dee061f583.png)
-
 4. 點擊站名地圖移動至該站牌位置
 
+### 搜尋站牌頁面
+
+![image](https://user-images.githubusercontent.com/24973056/128719194-aaff5476-c452-4a99-8d9f-3bd927a1adb7.png)
+
+使用者可點選地圖或輸入地址，查詢目標位置鄰近站牌資訊
+
 ### 站牌資訊頁面
+
+![image](https://user-images.githubusercontent.com/24973056/128720468-0d6a8d6e-7ecf-4d9c-aa8b-3952a5c1cc37.png)
+
+1. 點擊顯示經過該站牌路線
+2. 於地圖額外顯示該站牌名稱
