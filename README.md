@@ -23,7 +23,7 @@ Taipei Bus Radar網站：https://bus.taipeilife.info/<br>
 ## 系統架構圖
 ![image](https://user-images.githubusercontent.com/24973056/128721590-5598f6d3-4748-4116-be40-3b8b1ddf0759.png)
 
-## MySQL資料庫架構
+## MySQL資料庫架構圖
 ![image](https://user-images.githubusercontent.com/24973056/128684156-398f38ac-8a9b-481c-afab-85fcabc10225.png)
 
 ## 網站導覽
