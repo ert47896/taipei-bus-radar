@@ -18,7 +18,7 @@ stopApi = Blueprint("stopApi", __name__)
 @cache.cached(timeout=300, key_prefix="stop_location")
 def get_stop_status():
     # 由資料庫取出所需資料
-    selectSql = "SELECT stopname_tw, stopname_en, address, ST_Y(coordinate), ST_X(coordinate) FROM stationinfo"
+    selectSql = "SELECT stopname_tw, stopname_en, address, ST_X(coordinate), ST_Y(coordinate) FROM stationinfo"
     result = mysql.readData(selectSql)
     if "error" in result:
         return jsonify(result), 500
@@ -62,8 +62,8 @@ def get_stops_data():
         "selectLng": lng,
     }
     # 由資料庫取出目標位置鄰近300公尺站牌資料
-    selectSql = f"SELECT stopname_tw, address, ST_X(coordinate), ST_Y(coordinate) FROM stationinfo \
-        WHERE ST_X(coordinate) BETWEEN {lat-diffRange} AND {lat+diffRange} AND ST_Y(coordinate) BETWEEN {lng-diffRange} AND {lng+diffRange}"
+    selectSql = f"SELECT stopname_tw, address, ST_Y(coordinate), ST_X(coordinate) FROM stationinfo \
+        WHERE ST_Y(coordinate) BETWEEN {lat-diffRange} AND {lat+diffRange} AND ST_X(coordinate) BETWEEN {lng-diffRange} AND {lng+diffRange}"
     result = mysql.readData(selectSql)
     if len(result) == 0:
         temp["stops"] = "無鄰近站牌資料"
@@ -91,11 +91,11 @@ def get_stop_data():
     lng = request.args.get("longitude")
     returnData = dict()
     returnData["data"] = []
-    # 由資料庫取出經過該站牌路線資料
+    # 由資料庫取出經過該站牌路線資料(SRID = 3826)
     sqlSelect = "SELECT a.routename_tw, a.depname_tw, a.destname_tw, b.direction FROM busroute AS a \
         JOIN stopofroute AS b ON a.routeUID = b.routeUID WHERE b.stopUID IN (SELECT StopUID FROM stopofstation \
-        WHERE stationUID = (SELECT stationUID FROM stationinfo WHERE coordinate = POINT(%s, %s)));"
-    sqlValue = (lat, lng)
+        WHERE stationUID = (SELECT stationUID FROM stationinfo AS s WHERE MBRContains (ST_SRID(POINT(%s, %s), 3826), s.coordinate)));"
+    sqlValue = (lng, lat)
     routeResult = mysql.readData(sqlSelect, sqlValue)
     if len(routeResult) == 0:
         returnData["data"].append({"error": "此站牌查無路線經過"})

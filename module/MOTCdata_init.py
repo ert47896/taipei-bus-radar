@@ -15,15 +15,16 @@ for eachRow in response:
         eachRow["StationName"]["Zh_tw"],
         eachRow["Stops"][0]["StopName"]["En"],
         eachRow["StationAddress"],
-        eachRow["StationPosition"]["PositionLat"],
         eachRow["StationPosition"]["PositionLon"],
+        eachRow["StationPosition"]["PositionLat"],
     )
     insertStationinfo.append(tempTuple)
     for eachStop in eachRow["Stops"]:
         tempTuple = (eachStop["StopUID"], eachRow["StationUID"])
         insertStopofstation.append(tempTuple)
+# ST_SRID(lon, lat)
 insertSqlStationinfo = "INSERT INTO stationinfo (stationUID, stopname_tw, stopname_en, address, coordinate) VALUES \
-    (%s, %s, %s, %s, POINT(%s, %s))"
+    (%s, %s, %s, %s, ST_SRID(POINT(%s, %s), 3826))"
 insertSqlStopofstation = (
     "INSERT INTO stopofstation (stopUID, stationUID) VALUES (%s, %s)"
 )

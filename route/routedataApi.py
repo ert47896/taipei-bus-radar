@@ -98,7 +98,7 @@ def get_each_routedata(routename):
 
 @routestatusApi.route("/routestatus/<routename>", methods=["GET"])
 def get_routestatus(routename):
-    selectSql = "SELECT a.stopUID, d.routeUID, b.stopname_tw, b.address, ST_X(b.coordinate), ST_Y(b.coordinate), c.direction FROM stopofstation AS a JOIN stationinfo AS b ON a.stationUID = b.stationUID JOIN stopofroute AS c ON a.stopUID = c.stopUID JOIN busroute AS d ON c.routeUID = d.routeUID WHERE d.routename_tw = %s"
+    selectSql = "SELECT a.stopUID, d.routeUID, b.stopname_tw, b.address, ST_Y(b.coordinate), ST_X(b.coordinate), c.direction FROM stopofstation AS a JOIN stationinfo AS b ON a.stationUID = b.stationUID JOIN stopofroute AS c ON a.stopUID = c.stopUID JOIN busroute AS d ON c.routeUID = d.routeUID WHERE d.routename_tw = %s"
     selectValue = (routename,)
     result = mysql.readData(selectSql, selectValue)
     returnData = dict()

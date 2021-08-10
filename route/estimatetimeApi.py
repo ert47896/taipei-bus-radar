@@ -15,9 +15,10 @@ def get_estimatetime_data():
     stopBusTime = get_stop_estimate_time()
     returnData = dict()
     returnData["data"] = []
-    # 找出所有該車站的站牌資料
-    selectSql = f"SELECT stopUID FROM stopofstation WHERE stationUID = (SELECT stationUID FROM stationinfo WHERE coordinate = POINT({latitude}, {longitude}))"
-    resultstopUID = mysql.readData(selectSql)
+    # 找出所有該車站的站牌資料(SRID = 3826)
+    selectSql = "SELECT stopUID FROM stopofstation WHERE stationUID = (SELECT stationUID FROM stationinfo AS s WHERE MBRContains(ST_SRID(POINT(%s, %s), 3826), s.coordinate))"
+    selectValue = (longitude, latitude)
+    resultstopUID = mysql.readData(selectSql, selectValue)
     # 找出站牌資料所屬路線UID
     allrouteUID = []
     returnData["data"].append({"routedata": {}})
@@ -45,7 +46,8 @@ def get_estimatetime_data():
             "estimateStatus": estimateStatus,
         }
     routeUID_strings = "','".join(allrouteUID)
-    selectSql = f"SELECT a.stopname_tw, a.stopname_en, b.routeUID, b.routename_tw, b.routename_en, b.depname_tw, b.depname_en, b.destname_tw, b.destname_en FROM stationinfo AS a, busroute AS b WHERE a.coordinate = POINT({latitude}, {longitude}) AND b.routeUID IN ('{routeUID_strings}')"
+    # SRID = 3826
+    selectSql = f"SELECT a.stopname_tw, a.stopname_en, b.routeUID, b.routename_tw, b.routename_en, b.depname_tw, b.depname_en, b.destname_tw, b.destname_en FROM stationinfo AS a, busroute AS b WHERE MBRContains(ST_SRID(POINT({longitude}, {latitude}), 3826), a.coordinate) AND b.routeUID IN ('{routeUID_strings}')"
     resultrouteData = mysql.readData(selectSql)
     # 將站牌名中文英文新增至returnData
     stopname = {

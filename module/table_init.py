@@ -8,7 +8,8 @@ stationUID VARCHAR(16) PRIMARY KEY,
 stopname_tw VARCHAR(32),
 stopname_en VARCHAR(128),
 address VARCHAR(64),
-coordinate POINT)"""
+coordinate POINT NOT NULL SRID 3826,
+SPATIAL INDEX(coordinate))"""
 )
 mysql.tableDBControl(
     """CREATE TABLE stopofstation(
@@ -38,14 +39,14 @@ destname_en VARCHAR(64),
 routeimgurl TEXT)"""
 )
 mysql.tableDBControl(
-'''CREATE TABLE operatorofroute(
+    """CREATE TABLE operatorofroute(
 ofrID SMALLINT AUTO_INCREMENT PRIMARY KEY,
 routeUID VARCHAR(16),
 operatorID VARCHAR(16),
 FOREIGN KEY (routeUID)
 REFERENCES busroute(routeUID) ON UPDATE CASCADE ON DELETE SET NULL,
 FOREIGN KEY (operatorID)
-REFERENCES operator(operatorID) ON UPDATE CASCADE ON DELETE SET NULL)'''
+REFERENCES operator(operatorID) ON UPDATE CASCADE ON DELETE SET NULL)"""
 )
 mysql.tableDBControl(
     """CREATE TABLE stopofroute(
