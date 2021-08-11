@@ -48,11 +48,13 @@ let views = {
         // 設定地圖參數
         this.mymap = L.map("mapId").setView([lat, lon], 17);
         // 套用maps terrain圖層
-        L.tileLayer('https://stamen-tiles.a.ssl.fastly.net/terrain/{z}/{x}/{y}.jpg', {
+        L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.{ext}', {
             attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href=\
             "http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">\
             OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
-            maxZoom: 18
+            maxZoom: 18,
+			subdomains: "abcd",
+			ext: "png"
         }).addTo(this.mymap);
         // 設定比例尺(取消顯示英里、顯示位置調為右下角)
         L.control.scale({ imperial: false, position: "bottomright" }).addTo(this.mymap);
