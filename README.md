@@ -16,11 +16,10 @@ Taipei Bus Radar網站：https://bus.taipeilife.info/<br>
 * 以第三正規化設計 MySQL 資料庫
 * 設定 index 及 foreign key 於 MySQL 資料庫
 * 採 RESTful 架構設計網站 API
-* 採 MVC 架構編寫 Javascript
 * 應用 Leaflet 構建網頁地圖
 * 運用 Google Geocoding API 進行地址反查經緯度資料
 * 部署網站於 AWS EC2 且透由 Nginx 反向代理
-* SSL 憑證實踐 HTTPS
+* 透由 Let's Encrypt 申請 SSL 憑證實踐 HTTPS
 
 ## 系統架構圖
 ![image](https://user-images.githubusercontent.com/24973056/128721590-5598f6d3-4748-4116-be40-3b8b1ddf0759.png)
