@@ -11,13 +11,15 @@
 Taipei Bus Radar網站：https://bus.taipeilife.info/<br>
 
 ## 使用技術
-* Python Flask
+* 以 Python Flask 框架建立網站
+* 使用 MySQL 及 Flask-Caching 儲存資料
+* 以第三正規化設計 MySQL 資料庫
+* 設定 index 及 foreign key 於 MySQL 資料庫
+* 採 RESTful 架構設計網站 API
 * 採 MVC 架構編寫 Javascript
 * 應用 Leaflet 構建網頁地圖
-* 使用 MySQL 及 Flask-caching 儲存資料
-* 採 RESTful 架構設計網站 API
 * 運用 Google Geocoding API 進行地址反查經緯度資料
-* 部署網站於 AWS EC2 並運用 Nginx 反向代理
+* 部署網站於 AWS EC2 且透由 Nginx 反向代理
 * SSL 憑證實踐 HTTPS
 
 ## 系統架構圖
