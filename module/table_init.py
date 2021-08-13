@@ -36,7 +36,8 @@ depname_tw VARCHAR(16),
 depname_en VARCHAR(64),
 destname_tw VARCHAR(16),
 destname_en VARCHAR(64),
-routeimgurl TEXT)"""
+routeimgurl TEXT,
+UNIQUE INDEX(routename_tw))"""
 )
 mysql.tableDBControl(
     """CREATE TABLE operatorofroute(
