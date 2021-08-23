@@ -22,8 +22,8 @@ let views = {
     orangeBus: null,
     // stop icon變數
     stopIcon: null,
-    // bus layer
-    buslayer: null,
+    // bus layer(運用群集套件，spiderfyOnMaxZoom 取消聯結效果，於 zoom 值 18 不要群集)
+    buslayer: L.markerClusterGroup({ spiderfyOnMaxZoom: false, disableClusteringAtZoom: 18 }),
     // stop layer
     stoplayer: null,
     // 到站時間面板狀態變數 true有顯示 false未顯示
@@ -53,8 +53,8 @@ let views = {
             "http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">\
             OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
             maxZoom: 18,
-			subdomains: "abcd",
-			ext: "png"
+            subdomains: "abcd",
+            ext: "png"
         }).addTo(this.mymap);
         // 設定比例尺(取消顯示英里、顯示位置調為右下角)
         L.control.scale({ imperial: false, position: "bottomright" }).addTo(this.mymap);
@@ -66,10 +66,10 @@ let views = {
     // 標註公車位置及服務數量
     renderBus: function (data) {
         let totalOperate = 0;
-        this.buslayer = L.layerGroup().addTo(this.mymap);
         for (const [key, busData] of Object.entries(data)) {
             busData["OperateBus"].forEach((eachBus) => {
-                let marker = L.marker([eachBus["latitude"], eachBus["longitude"]], { icon: this.orangeBus }).bindTooltip(busData["routename"]["tw"] + "<br>" + eachBus["platenumb"]).addTo(this.buslayer);
+                let marker = L.marker([eachBus["latitude"], eachBus["longitude"]], { icon: this.orangeBus }).bindTooltip(busData["routename"]["tw"] + "<br>" + eachBus["platenumb"]);
+                this.buslayer.addLayer(marker);
                 // 如果為返程將起訖點互換
                 if (eachBus["direction"] === 1) {
                     const temp = busData["depdestname"]["depname_tw"];
@@ -86,6 +86,7 @@ let views = {
                 totalOperate += 1;
             });
         };
+        this.mymap.addLayer(this.buslayer);
         const textDOM = document.querySelector(".totalBusPart");
         textDOM.textContent = totalOperate + " 輛公車行駛中";
     },
