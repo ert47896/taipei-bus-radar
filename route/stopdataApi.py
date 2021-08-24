@@ -91,10 +91,10 @@ def get_stop_data():
     lng = request.args.get("longitude")
     returnData = dict()
     returnData["data"] = []
-    # 由資料庫取出經過該站牌路線資料(SRID = 3826)
+    # 由資料庫取出經過該站牌路線資料(SRID = 3826)，有 6 個站牌重複使用同個經緯度
     sqlSelect = "SELECT a.routename_tw, a.depname_tw, a.destname_tw, b.direction FROM busroute AS a \
         JOIN stopofroute AS b ON a.routeUID = b.routeUID WHERE b.stopUID IN (SELECT StopUID FROM stopofstation \
-        WHERE stationUID = (SELECT stationUID FROM stationinfo AS s WHERE MBRContains (ST_SRID(POINT(%s, %s), 3826), s.coordinate)));"
+        WHERE stationUID = ANY(SELECT stationUID FROM stationinfo AS s WHERE MBRContains (ST_SRID(POINT(%s, %s), 3826), s.coordinate)))"
     sqlValue = (lng, lat)
     routeResult = mysql.readData(sqlSelect, sqlValue)
     if len(routeResult) == 0:

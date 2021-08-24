@@ -15,8 +15,8 @@ def get_estimatetime_data():
     stopBusTime = get_stop_estimate_time()
     returnData = dict()
     returnData["data"] = []
-    # 找出所有該車站的站牌資料(SRID = 3826)
-    selectSql = "SELECT stopUID FROM stopofstation WHERE stationUID = (SELECT stationUID FROM stationinfo AS s WHERE MBRContains(ST_SRID(POINT(%s, %s), 3826), s.coordinate))"
+    # 找出所有該車站的站牌資料(SRID = 3826)，有 6 個站牌重複使用同個經緯度
+    selectSql = "SELECT stopUID FROM stopofstation WHERE stationUID = ANY(SELECT stationUID FROM stationinfo AS s WHERE MBRContains(ST_SRID(POINT(%s, %s), 3826), s.coordinate))"
     selectValue = (longitude, latitude)
     resultstopUID = mysql.readData(selectSql, selectValue)
     # 找出站牌資料所屬路線UID
@@ -46,6 +46,7 @@ def get_estimatetime_data():
             "estimateStatus": estimateStatus,
         }
     routeUID_strings = "','".join(allrouteUID)
+    print(routeUID_strings)
     # SRID = 3826
     selectSql = f"SELECT a.stopname_tw, a.stopname_en, b.routeUID, b.routename_tw, b.routename_en, b.depname_tw, b.depname_en, b.destname_tw, b.destname_en FROM stationinfo AS a, busroute AS b WHERE MBRContains(ST_SRID(POINT({longitude}, {latitude}), 3826), a.coordinate) AND b.routeUID IN ('{routeUID_strings}')"
     resultrouteData = mysql.readData(selectSql)
