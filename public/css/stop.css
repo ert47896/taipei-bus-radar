@@ -207,7 +207,7 @@ main{
 footer{
     flex: none;                     /*footer固定高度*/
     background-color: #757575;
-    min-height: 70px;
+    height: 70px;
     display: flex;
     flex-direction: column;         /*排列改為垂直對齊*/
     align-items: center;            /*水平置中*/

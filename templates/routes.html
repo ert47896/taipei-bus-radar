@@ -1,33 +1,15 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <title>Taipei Bus Radar</title>
-    <link href="/css/routes.css" rel="stylesheet" type="text/css" media="all" />
-    <script defer src="/js/routes.js"></script>
-    <link rel="icon" href="/image/favicon.ico" />
-</head>
+{% block css %}
+<link href="/css/routes.css" rel="stylesheet" type="text/css" media="all" />
+{% endblock %}
 
-<body>
-    <nav>
-        <div class="navLeftside"><a class="hyperTitle" href="/">TaipeiBusRadar</a></div>
-        <div class="search">
-            <input type="text" id="keyword" placeholder="輸入路線名稱查詢" /><button class="searchBtn"></button>
-        </div>
-        <ul class="navRightside">
-            <li class="routeData"><a class="hyperTitle" href="/routes">路線資訊</a></li>
-            <li class="stationData"><a class="hyperTitle" href="/stops">站牌資訊</a></li>
-        </ul>
-    </nav>
-    <main></main>
-    <footer>
-        <div>COPYRIGHT © 2021 TaipeiBusRadar</div>
-        <div>Data from <a class="hyperTitleBlue" href="https://ptx.transportdata.tw/PTX/">交通部公共運輸整合資訊流通服務平臺（PTX）</a>
-        </div>
-        <div>Icon made by <a class="hyperTitleBlue" href="https://www.iconshock.com">iconshock</a></div>
-    </footer>
-</body>
+{% block script %}
+<script defer src="/js/routes.js"></script>
+{% endblock %}
 
-</html>
+{% block nav %}
+<div class="search">
+    <input type="text" id="keyword" placeholder="輸入路線名稱查詢" /><button class="searchBtn"></button>
+</div>
+{% endblock %}

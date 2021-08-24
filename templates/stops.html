@@ -1,73 +1,58 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <title>Taipei Bus Radar</title>
-    <link href="/css/stops.css" rel="stylesheet" type="text/css" media="all" />
-    <!-- start地圖 -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-        crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-        crossorigin=""></script>
-    <!-- end地圖 -->
-    <script defer src="/js/stops.js"></script>
-    <link rel="icon" href="/image/favicon.ico" />
-</head>
+{% block css %}
+<link href="/css/stops.css" rel="stylesheet" type="text/css" media="all" />
+{% endblock %}
 
-<body>
-    <nav>
-        <div class="navLeftside"><a class="hyperTitle" href="/">TaipeiBusRadar</a></div>
-        <div class="timePart"></div>
-        <ul class="navRightside">
-            <li class="routeData"><a class="hyperTitle" href="/routes">路線資訊</a></li>
-            <li class="stationData"><a class="hyperTitle" href="/stops">站牌資訊</a></li>
-        </ul>
-    </nav>
-    <main>
-        <article id="mapId">
-            <div class="locationBtn" title="我的位置(需開啟定位權限)"></div>
-        </article>
-        <aside class="searchSide">
-            <div class="searchTitle">搜尋目標位置鄰近300公尺內站牌資訊</div>
-            <section class="searchType">
-                <div class="searchMehtod">方式A</div>
-                <div class="searchContent">點擊地圖選擇欲查詢位置</div>
-                <div class="hiddenElement">
-                    <div class="searchContent">目前選擇位置</div>
-                    <div class="searchContent">
-                        經度：<span id="longitude"></span>
-                    </div>
-                    <div class="searchContent">
-                        緯度：<span id="latitude"></span>
-                    </div>
-                    <div class="searchContent">
-                        <button class="searchBtn" id="method1">開始搜尋</button>
-                    </div>
-                </div>
-            </section>
-            <section class="searchType">
-                <div class="searchMehtod">方式B</div>
-                <div class="searchExample">( 例:臺北市忠孝西路一段49號 )</div>
-                <div class="searchContent">
-                    <input type="text" id="keyword" placeholder="輸入地址查詢" />
-                </div>
-                <div class="errorAddress"></div>
-                <div class="searchContent">
-                    <button class="searchBtn" id="method2">開始搜尋</button>
-                </div>
-            </section>
-        </aside>
-    </main>
-    <footer>
-        <div>COPYRIGHT © 2021 TaipeiBusRadar</div>
-        <div>Data from <a class="hyperTitleBlue" href="https://ptx.transportdata.tw/PTX/">交通部公共運輸整合資訊流通服務平臺（PTX）</a>
+{% block map %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+{% endblock %}
+
+{% block script %}
+<script defer src="/js/stops.js"></script>
+{% endblock %}
+
+{% block nav %}
+<div class="timePart"></div>
+{% endblock %}
+
+{% block main %}
+<article id="mapId">
+    <div class="locationBtn" title="我的位置(需開啟定位權限)"></div>
+</article>
+<aside class="searchSide">
+    <div class="searchTitle">搜尋目標位置鄰近300公尺內站牌資訊</div>
+    <section class="searchType">
+        <div class="searchMehtod">方式 Ａ</div>
+        <div class="searchContent">點擊地圖選擇欲查詢位置</div>
+        <div class="hiddenElement">
+            <div class="searchContent">目前選擇位置</div>
+            <div class="searchContent">
+                經度：<span id="longitude"></span>
+            </div>
+            <div class="searchContent">
+                緯度：<span id="latitude"></span>
+            </div>
+            <div class="searchContent">
+                <button class="searchBtn" id="method1">開始搜尋</button>
+            </div>
         </div>
-        <div>Icon made by <a class="hyperTitleBlue" href="https://www.iconshock.com">iconshock</a></div>
-    </footer>
-</body>
-
-</html>
+    </section>
+    <section class="searchType">
+        <div class="searchMehtod">方式 Ｂ</div>
+        <div class="searchExample">( 例:臺北市忠孝西路一段49號 )</div>
+        <div class="searchContent">
+            <input type="text" id="keyword" placeholder="輸入地址查詢" />
+        </div>
+        <div class="errorAddress"></div>
+        <div class="searchContent">
+            <button class="searchBtn" id="method2">開始搜尋</button>
+        </div>
+    </section>
+</aside>
+{% endblock %}
