@@ -1,4 +1,4 @@
-# [Taipei Bus Radar] 台北市公車動態資訊網站
+# [Taipei Bus Radar](https://bus.taipeilife.info/) 台北市公車動態資訊網站
 
 本專案依據[交通部公共運輸資訊服務平台](https://ptx.transportdata.tw/MOTC)資料建置，功能包括：
 * 顯示營運公車位置及行駛資訊
@@ -7,6 +7,8 @@
 * 依據使用者所輸入目標地點，呈現鄰近站牌資訊
 * 針對選定站牌顯示經過路線
 
+## Demo
+Taipei Bus Radar網站：https://bus.taipeilife.info/<br>
 
 ## 使用技術
 * 以 Python Flask 框架建立網站
