@@ -7,6 +7,8 @@
 * 依據使用者所輸入目標地點，呈現鄰近站牌資訊
 * 針對選定站牌顯示經過路線
 
+## Demo
+Taipei Bus Radar網站：https://taipeilife.site/<br>
 
 ## 使用技術
 * 以 Python Flask 框架建立網站
