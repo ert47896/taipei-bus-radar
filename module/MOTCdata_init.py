@@ -10,10 +10,14 @@ response = response.json()
 insertStationinfo = []
 insertStopofstation = []
 for eachRow in response:
+    if "En" not in eachRow["Stops"][0]["StopName"]:
+        ename = "無資料"
+    else:
+        ename = eachRow["Stops"][0]["StopName"]["En"]
     tempTuple = (
         eachRow["StationUID"],
         eachRow["StationName"]["Zh_tw"],
-        eachRow["Stops"][0]["StopName"]["En"],
+        ename,
         eachRow["StationAddress"],
         eachRow["StationPosition"]["PositionLon"],
         eachRow["StationPosition"]["PositionLat"],

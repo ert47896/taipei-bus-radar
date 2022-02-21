@@ -46,7 +46,6 @@ def get_estimatetime_data():
             "estimateStatus": estimateStatus,
         }
     routeUID_strings = "','".join(allrouteUID)
-    print(routeUID_strings)
     # SRID = 3826
     selectSql = f"SELECT a.stopname_tw, a.stopname_en, b.routeUID, b.routename_tw, b.routename_en, b.depname_tw, b.depname_en, b.destname_tw, b.destname_en FROM stationinfo AS a, busroute AS b WHERE MBRContains(ST_SRID(POINT({longitude}, {latitude}), 3826), a.coordinate) AND b.routeUID IN ('{routeUID_strings}')"
     resultrouteData = mysql.readData(selectSql)
