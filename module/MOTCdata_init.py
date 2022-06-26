@@ -89,10 +89,12 @@ response = request("get", req_url_shape, headers=motcAPI.authHeader())
 responseShape = response.json()
 insertValue = []
 for eachRow in responseShape:
+    if "MULTILINESTRING" in eachRow["Geometry"]:
+        eachRow["Geometry"] = None
     tempTuple = (eachRow["Geometry"], eachRow["RouteUID"])
     insertValue.append(tempTuple)
 insertSql = (
-    "UPDATE busroute SET linestrings = ST_LineStringFromText(%s) WHERE routeUID = %s"
+    "UPDATE busroute SET linestrings = ST_GeomFromText(%s) WHERE routeUID = %s"
 )
 mysql.cudData(insertSql, insertValue)
 

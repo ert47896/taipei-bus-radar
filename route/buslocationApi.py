@@ -51,6 +51,7 @@ def get_route_bus_location():
     selectSql = f"SELECT routeUID, routename_tw, routename_en, depname_tw, depname_en, destname_tw, destname_en FROM busroute WHERE routeUID IN ('{routeUID_strings}')"
     result = mysql.readData(selectSql)
     for routeData in result:
+        print(routeData)
         returnData["data"][routeData[0]]["routename"] = {
             "tw": routeData[1],
             "en": routeData[2],
