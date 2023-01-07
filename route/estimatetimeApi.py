@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 from module.mysqlmethods import mysql
 from math import ceil
 from module.cache import cache
-from module.motcapi import motcAPI
+from module.tdxapi import get_data, data_instance
 import time
 
 estimatetimeApi = Blueprint("estimatetimeApi", __name__)
@@ -85,9 +85,11 @@ def get_estimatetime_data():
 def get_stop_estimate_time():
     from requests import request
 
-    # Access data from MOTC ptx
-    req_url = "https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei?$select=StopUID%2C%20RouteUID%2C%20Direction%2C%20EstimateTime%2C%20StopStatus&$format=JSON"
-    response = request("get", req_url, headers=motcAPI.authHeader())
+    # Access data from MOTC ptx (transfer from PTX to TDX)
+    # req_url = "https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/Taipei?$select=StopUID%2C%20RouteUID%2C%20Direction%2C%20EstimateTime%2C%20StopStatus&$format=JSON"
+    # Access data from MOTC TDX
+    req_url = "https://tdx.transportdata.tw/api/basic/v2/Bus/EstimatedTimeOfArrival/City/Taipei?$select=StopUID%2C%20RouteUID%2C%20Direction%2C%20EstimateTime%2C%20StopStatus&$format=JSON"
+    response = get_data(req_url, data_instance)
     response = response.json()
     stopBusTime = dict()
     try:

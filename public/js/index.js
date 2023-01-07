@@ -68,6 +68,7 @@ let views = {
         let totalOperate = 0;
         for (const [key, busData] of Object.entries(data)) {
             busData["OperateBus"].forEach((eachBus) => {
+                // Notice: some bus didn't have route name(chinses & english), because of the null data in MySQL
                 let marker = L.marker([eachBus["latitude"], eachBus["longitude"]], { icon: this.orangeBus }).bindTooltip(busData["routename"]["tw"] + "<br>" + eachBus["platenumb"]);
                 this.buslayer.addLayer(marker);
                 // 如果為返程將起訖點互換

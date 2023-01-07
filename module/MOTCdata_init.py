@@ -1,11 +1,10 @@
 from mysqlmethods import mysql
-from motcapi import motcAPI
-from requests import request
+from tdxapi import get_data, data_instance
 
 
 # Insert data into table stationinfo and stopofstation
-req_url = "https://ptx.transportdata.tw/MOTC/v2/Bus/Station/City/Taipei?$select=StationUID%2C%20StationName%2C%20Stops%2C%20StationAddress%2C%20StationPosition&$format=JSON"
-response = request("get", req_url, headers=motcAPI.authHeader())
+req_url = "https://tdx.transportdata.tw/api/basic/v2/Bus/Station/City/Taipei?$select=StationUID%2C%20StationName%2C%20Stops%2C%20StationAddress%2C%20StationPosition&$format=JSON"
+response = get_data(req_url, data_instance)
 response = response.json()
 insertStationinfo = []
 insertStopofstation = []
@@ -36,8 +35,8 @@ mysql.cudData(insertSqlStationinfo, insertStationinfo)
 mysql.cudData(insertSqlStopofstation, insertStopofstation)
 
 # Insert data into table operator
-req_url = "https://ptx.transportdata.tw/MOTC/v2/Bus/Operator/City/Taipei?$select=OperatorID%2C%20OperatorName%2C%20OperatorPhone%2C%20OperatorUrl&$format=JSON"
-response = request("get", req_url, headers=motcAPI.authHeader())
+req_url = "https://tdx.transportdata.tw/api/basic/v2/Bus/Operator/City/Taipei?$select=OperatorID%2C%20OperatorName%2C%20OperatorPhone%2C%20OperatorUrl&$format=JSON"
+response = get_data(req_url, data_instance)
 response = response.json()
 insertValue = []
 for eachRow in response:
@@ -55,8 +54,8 @@ mysql.cudData(insertSql, insertValue)
 
 # Insert data into table busroute and operatorofroute
 # data in Route API
-req_url_route = "https://ptx.transportdata.tw/MOTC/v2/Bus/Route/City/Taipei?$select=RouteUID%2C%20Operators%2C%20RouteName%2C%20DepartureStopNameZh%2C%20DepartureStopNameEn%2C%20DestinationStopNameZh%2C%20DestinationStopNameEn%2C%20RouteMapImageUrl&$format=JSON"
-response = request("get", req_url_route, headers=motcAPI.authHeader())
+req_url_route = "https://tdx.transportdata.tw/api/basic/v2/Bus/Route/City/Taipei?$select=RouteUID%2C%20Operators%2C%20RouteName%2C%20DepartureStopNameZh%2C%20DepartureStopNameEn%2C%20DestinationStopNameZh%2C%20DestinationStopNameEn%2C%20RouteMapImageUrl&$format=JSON"
+response = get_data(req_url, data_instance)
 responseRoute = response.json()
 insertBusroute = []
 insertOperatorofroute = []
@@ -84,8 +83,8 @@ mysql.cudData(insertSqlBusroute, insertBusroute)
 mysql.cudData(insertSqlOperatorofroute, insertOperatorofroute)
 
 # data in Shape API
-req_url_shape = "https://ptx.transportdata.tw/MOTC/v2/Bus/Shape/City/Taipei?$select=Geometry%2C%20RouteUID&$format=JSON"
-response = request("get", req_url_shape, headers=motcAPI.authHeader())
+req_url_shape = "https://tdx.transportdata.tw/api/basic/v2/Bus/Shape/City/Taipei?$select=Geometry%2C%20RouteUID&$format=JSON"
+response = get_data(req_url, data_instance)
 responseShape = response.json()
 insertValue = []
 for eachRow in responseShape:
@@ -93,14 +92,12 @@ for eachRow in responseShape:
         eachRow["Geometry"] = None
     tempTuple = (eachRow["Geometry"], eachRow["RouteUID"])
     insertValue.append(tempTuple)
-insertSql = (
-    "UPDATE busroute SET linestrings = ST_GeomFromText(%s) WHERE routeUID = %s"
-)
+insertSql = "UPDATE busroute SET linestrings = ST_GeomFromText(%s) WHERE routeUID = %s"
 mysql.cudData(insertSql, insertValue)
 
 # Insert data into table stopofroute
-req_url = "https://ptx.transportdata.tw/MOTC/v2/Bus/DisplayStopOfRoute/City/Taipei?$select=RouteUID%2C%20Direction%2C%20Stops&$format=JSON"
-response = request("get", req_url, headers=motcAPI.authHeader())
+req_url = "https://tdx.transportdata.tw/api/basic/v2/Bus/DisplayStopOfRoute/City/Taipei?$select=RouteUID%2C%20Direction%2C%20Stops&$format=JSON"
+response = get_data(req_url, data_instance)
 response = response.json()
 insertValue = []
 for eachRow in response:

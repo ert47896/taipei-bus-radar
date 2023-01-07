@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from module.mysqlmethods import mysql
-from module.motcapi import motcAPI
+from module.tdxapi import get_data, data_instance
 from module.cache import cache
 from shapely.wkt import loads
 from .estimatetimeApi import get_stop_estimate_time
@@ -181,9 +181,11 @@ def get_routestatus(routename):
 def get_bus_on_stop():
     from requests import request
 
-    # Access data from MOTC ptx
-    req_url = "https://ptx.transportdata.tw/MOTC/v2/Bus/RealTimeNearStop/City/Taipei?$select=PlateNumb%2C%20DutyStatus%2C%20RouteUID%2C%20Direction%2C%20StopUID&$filter=DutyStatus%20eq%201%20or%20DutyStatus%20eq%200&$format=JSON"
-    response = request("get", req_url, headers=motcAPI.authHeader())
+    # Access data from MOTC ptx (transfer from PTX to TDX)
+    # req_url = "https://ptx.transportdata.tw/MOTC/v2/Bus/RealTimeNearStop/City/Taipei?$select=PlateNumb%2C%20DutyStatus%2C%20RouteUID%2C%20Direction%2C%20StopUID&$filter=DutyStatus%20eq%201%20or%20DutyStatus%20eq%200&$format=JSON"
+    # Access data from MOTC TDX
+    req_url = "https://tdx.transportdata.tw/api/basic/v2/Bus/RealTimeNearStop/City/Taipei?$select=PlateNumb%2C%20DutyStatus%2C%20RouteUID%2C%20Direction%2C%20StopUID&$filter=DutyStatus%20eq%201%20or%20DutyStatus%20eq%200&$format=JSON"
+    response = get_data(req_url, data_instance)
     response = response.json()
     returnData = dict()
     returnData["data"] = dict()
