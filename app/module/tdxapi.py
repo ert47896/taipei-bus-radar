@@ -43,11 +43,9 @@ class Data:
 def get_data(url):
     try:
         data_instance = Data(auth_response)
-        data_response = requests.get(url, headers=data_instance.get_data_header())
+        return requests.get(url, headers=data_instance.get_data_header())
     except:
         auth_instance = Auth()
         auth_response = requests.post(auth_url, auth_instance.get_auth_header())
         data_instance = Data(auth_response)
-        data_response = requests.get(url, headers=data_instance.get_data_header())
-    finally:
-        return data_response
+        return requests.get(url, headers=data_instance.get_data_header())
