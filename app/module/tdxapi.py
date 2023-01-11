@@ -40,10 +40,14 @@ class Data:
         return {"authorization": "Bearer " + access_token}
 
 
-def get_data(url, data_instance):
-    return requests.get(url, headers=data_instance.get_data_header())
-
-
-auth_instance = Auth()
-auth_response = requests.post(auth_url, auth_instance.get_auth_header())
-data_instance = Data(auth_response)
+def get_data(url):
+    try:
+        data_instance = Data(auth_response)
+        data_response = requests.get(url, headers=data_instance.get_data_header())
+    except:
+        auth_instance = Auth()
+        auth_response = requests.post(auth_url, auth_instance.get_auth_header())
+        data_instance = Data(auth_response)
+        data_response = requests.get(url, headers=data_instance.get_data_header())
+    finally:
+        return data_response

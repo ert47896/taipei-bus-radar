@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 from module.mysqlmethods import mysql
-from module.tdxapi import get_data, data_instance
+from module.tdxapi import get_data
 from module.cache import cache
 import time
 
@@ -21,7 +21,7 @@ def get_route_bus_location():
     # Access data from MOTC TDX
     req_url = "https://tdx.transportdata.tw/api/basic/v2/Bus/RealTimeByFrequency/City/Taipei?$select=PlateNumb%2C%20RouteUID%2C%20BusPosition%2C%20Speed%2C%20Direction&$filter=DutyStatus%20eq%201%20or%20DutyStatus%20eq%200&$format=JSON"
     # response = request("get", req_url, headers=motcAPI.authHeader())
-    response = get_data(req_url, data_instance)
+    response = get_data(req_url)
     response = response.json()
     busRouteUID = []
     returnData = dict()
