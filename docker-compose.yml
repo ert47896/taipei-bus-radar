@@ -3,11 +3,11 @@ version: '3.8'
 services:
  web:
   build:
-   context: .
+   context: ./flask
   ports:
-    - 8000:3000
+    - 3000:3000
   volumes:
-    - ./:/workspace
+    - ./flask:/workspace/flask
   depends_on:
     mysqldb:
       condition: service_healthy
@@ -29,6 +29,22 @@ services:
     - mysql_config:/etc/mysql
   container_name: db
 
+ nginx:
+  image: jonasal/nginx-certbot:4.0.0
+  restart: unless-stopped
+  env_file:
+    - ./nginx/nginx-certbot.env
+  ports:
+    - 80:80
+    - 443:443
+  volumes:
+    - nginx_secrets:/etc/letsencrypt
+    - ./user_conf.d:/etc/nginx/user_conf.d
+  depends_on:
+    - web
+  container_name: nginx
+  
 volumes:
   mysql:
   mysql_config:
+  nginx_secrets:

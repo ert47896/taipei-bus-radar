@@ -63,6 +63,10 @@ for eachRow in responseRoute:
     for operator in eachRow["Operators"]:
         tempTuple = (eachRow["RouteUID"], operator["OperatorID"])
         insertOperatorofroute.append(tempTuple)
+    # some route didn't provide english name of departure stop / destination stop
+    if "DepartureStopNameEn" not in eachRow:
+        eachRow["DepartureStopNameEn"] = "未提供"
+        eachRow["DestinationStopNameEn"] = "未提供"
     tempTuple = (
         eachRow["RouteUID"],
         eachRow["RouteName"]["Zh_tw"],
