@@ -1,32 +1,37 @@
-# [Taipei Bus Radar](https://taipeilife.site/) 台北市公車動態資訊網站
+# [Taipei Bus Radar](https://bus.taipeilife.site/) 台北市公車動態資訊網站
 
-本專案依據[交通部公共運輸資訊服務平台](https://ptx.transportdata.tw/MOTC)資料建置，功能包括：
-* 顯示營運公車位置及行駛資訊
-* 依據使用者所輸入目標地點，呈現鄰近站牌資訊
-* 針對選定站牌顯示經過路線
+This website is built with realtime Taipei City bus data from [Transport Data wXchange](https://tdx.transportdata.tw/).
+Features include:
+* Show realtime bus locations and operation information (include speed, platenumber, route number, route origin and destination and estimated time of arrival)
+* Show the pass by routes for selected bus station
+* Show the bus stations informantion according the address which user inputed
+
 
 ## Demo
-Taipei Bus Radar網站：https://taipeilife.site/<br>
+Taipei Bus Radar website：https://bus.taipeilife.site/<br>
 
-## 使用技術
-* 以 Python Flask 框架建立網站
-* 使用 MySQL 及 Flask-Caching 儲存資料
-* 以第三正規化設計 MySQL 資料庫
-* 設定 index 及 foreign key 於 MySQL 資料庫
-* 採 RESTful 架構設計網站 API
-* 應用 Leaflet 構建網頁地圖
-* 運用 Google Geocoding API 進行地址反查經緯度資料
-* 部署網站於 AWS EC2 且透由 Nginx 反向代理
-* 透由 Let's Encrypt 申請 SSL 憑證實踐 HTTPS
+## Skills
+* Created with Python Flask
+* Combined Nginx, Flask, MySQL and Let's Encrypt(auto renew SSL certification) with Docker Compose for rapid deployment
+* Applied GitHub Actions for CI/CD
+* Used MySQL and Flask-caching for storing data
+* Designed MySQL database in Third Normal Form
+* Applied Index and Foreign key in MySQL database
+* Built RESTful style API
+* Used Jinja2 to build template
+* Set up the web map via Leaflet
+* Used Google Geocoding API for decoding address to latitude and longitude
+* Deployed website on AWS EC2
 
-## 系統架構圖
-![image](https://user-images.githubusercontent.com/24973056/128721590-5598f6d3-4748-4116-be40-3b8b1ddf0759.png)
+## System Architecture Diagrame
+![bus-architecture](https://user-images.githubusercontent.com/24973056/218423045-25de1c77-8e4d-44fa-b5f5-a960608c6e3a.png)
 
-## MySQL資料庫架構圖
-![image](https://user-images.githubusercontent.com/24973056/128684156-398f38ac-8a9b-481c-afab-85fcabc10225.png)
+## MySQL Database Schema
+![MySQL Schema](https://user-images.githubusercontent.com/24973056/128684156-398f38ac-8a9b-481c-afab-85fcabc10225.png)
 
-## 網站導覽
-### 首頁
+
+## Features
+### Homepage
 
 ![image](https://user-images.githubusercontent.com/24973056/128689061-ce8041c6-32d0-40c8-a7d0-49b535c60c9e.png)
 
