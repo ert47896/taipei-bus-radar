@@ -1,50 +1,39 @@
 version: '3.8'
-
+name: bus
 services:
- web:
-  build:
-   context: ./flask
-  ports:
-    - 3000:3000
-  volumes:
-    - ./flask:/workspace/flask
-  depends_on:
-    mysqldb:
-      condition: service_healthy
-  container_name: web
+  web:
+    build:
+      context: ./flask
+    ports:
+      - 3000:3000
+    volumes:
+      - ./flask:/workspace/flask
+    networks:
+      - proxy
+      - database
+    container_name: web
+   
+  nginx:
+    build:
+      context: ./nginx
+    restart: always
+    depends_on:
+      - web
+    volumes:
+      - ./flask:/workspace/flask
+      - /var/log/bus_web:/var/log/nginx
+    networks:
+      - proxy
+    environment:
+      - VIRTUAL_HOST=bus.taipeilife.site
+      - LETSENCRYPT_HOST=bus.taipeilife.site
+    container_name: proxied-bus
 
- mysqldb:
-  image: mysql
-  ports:
-    - 33306:3306
-  environment:
-    MYSQL_ROOT_PASSWORD: root
-    MYSQL_DATABASE: taipeibus
-  healthcheck:
-    test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-    timeout: 10s
-    retries: 5
-  volumes:
-    - mysql:/var/lib/mysql
-    - mysql_config:/etc/mysql
-  container_name: db
-
- nginx:
-  image: jonasal/nginx-certbot:4.0.0
-  restart: unless-stopped
-  env_file:
-    - ./nginx/nginx-certbot.env
-  ports:
-    - 80:80
-    - 443:443
-  volumes:
-    - nginx_secrets:/etc/letsencrypt
-    - ./user_conf.d:/etc/nginx/user_conf.d
-  depends_on:
-    - web
-  container_name: nginx
+networks:
+  proxy:
+    external: true
+    name: self-nginx-proxy
   
-volumes:
-  mysql:
-  mysql_config:
-  nginx_secrets:
+  database:
+    external: true
+    name: self-mysql

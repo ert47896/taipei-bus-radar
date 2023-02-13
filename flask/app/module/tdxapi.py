@@ -3,10 +3,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# Initialize parameters
 auth_url = (
     "https://tdx.transportdata.tw/auth/realms/TDXConnect/protocol/openid-connect/token"
 )
-
+first_run = True
 # Reference: https://github.com/tdxmotc/SampleCode
 
 
@@ -39,6 +40,10 @@ class Data:
 
         return {"authorization": "Bearer " + access_token}
 
+if first_run:
+    auth_instance = Auth()
+    auth_response = requests.post(auth_url, auth_instance.get_auth_header())
+    first_run = False
 
 def get_data(url):
     try:

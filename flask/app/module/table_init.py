@@ -1,5 +1,14 @@
 from mysqlmethods import mysql
 
+# Reset tables if exist
+mysql.tableDBControl(
+    """DROP TABLE IF EXISTS stationinfo,
+stopofstation,
+operator,
+busroute,
+operatorofroute,
+stopofroute"""
+)
 
 # Create tables
 mysql.tableDBControl(
