@@ -31,7 +31,7 @@ Taipei Bus Radar website：https://bus.taipeilife.site/<br>
 
 
 ## Features
-### Homepage
+### [Homepage](https://bus.taipeilife.site/)
 
 ![image](https://user-images.githubusercontent.com/24973056/128689061-ce8041c6-32d0-40c8-a7d0-49b535c60c9e.png)
 
@@ -63,21 +63,19 @@ Taipei Bus Radar website：https://bus.taipeilife.site/<br>
 4. Press the stop name to move to the location on map
 ![press stop name](https://user-images.githubusercontent.com/24973056/218920268-339df0c0-4bb4-43a4-b801-c2bee88f0102.png)
 
-### Search by Bus Stop Page
+### [Search by Bus Stop Page](https://bus.taipeilife.site/stops)
 
 ![image](https://user-images.githubusercontent.com/24973056/128719194-aaff5476-c452-4a99-8d9f-3bd927a1adb7.png)
 
 1. User can click any place on map, then press "Start Search" button
 ![click any place](https://user-images.githubusercontent.com/24973056/218925050-dd23c9cc-6697-4fe0-abcf-0bbf40642065.png)
 
-2.Get all the bus stops within about three hundreds from that point
+2.Get all the bus stops within about three hundreds from that point, choose stop name for detail information
+![distance300](https://user-images.githubusercontent.com/24973056/218938213-bb6ae88d-a39f-4c74-848b-23a41461a5a6.png)
 
-
-使用者可點選地圖或輸入地址，查詢目標位置鄰近站牌資訊
-
-### 站牌資訊頁面
+### Page of each bus stop
 
 ![image](https://user-images.githubusercontent.com/24973056/128720468-0d6a8d6e-7ecf-4d9c-aa8b-3952a5c1cc37.png)
 
-1. 點擊顯示經過該站牌路線
-2. 於地圖額外顯示該站牌名稱
+1. Click to present each route status
+2. Show the stop name on map
