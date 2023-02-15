@@ -11,7 +11,7 @@ Features include:
 Taipei Bus Radar website：https://bus.taipeilife.site/<br>
 
 ## Skills
-* Created with Python Flask
+* Created with Python Flask, Jinja2
 * Combined Nginx, Flask, MySQL and Let's Encrypt(auto renew SSL certification) with Docker Compose for rapid deployment
 * Applied GitHub Actions for CI/CD
 * Used MySQL and Flask-caching for storing data
@@ -71,7 +71,7 @@ Taipei Bus Radar website：https://bus.taipeilife.site/<br>
 ![distance300](https://user-images.githubusercontent.com/24973056/218938213-bb6ae88d-a39f-4c74-848b-23a41461a5a6.png)
 
 #### Method B
-Input the address you want to search for the nearby bus stops.
+Show the bus stations information according the address which user inputted.
 
 ### Page of each bus stop
 
