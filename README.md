@@ -2,7 +2,7 @@
 
 This website is built with realtime Taipei City bus data from [Transport Data wXchange](https://tdx.transportdata.tw/).
 Features include:
-* Show realtime bus locations and operation information (include speed, platenumber, route number, route origin and destination and estimated time of arrival)
+* Show realtime buses location and operation information(include speed, platenumber, route number, route origin and destination and estimated time of arrival)
 * Show the pass by routes for selected bus station
 * Show the bus stations informantion according the address which user inputed
 
@@ -24,7 +24,7 @@ Taipei Bus Radar website：https://bus.taipeilife.site/<br>
 * Deployed website on AWS EC2
 
 ## System Architecture Diagrame
-![bus-architecture](https://user-images.githubusercontent.com/24973056/218423045-25de1c77-8e4d-44fa-b5f5-a960608c6e3a.png)
+![bus-architecture](https://user-images.githubusercontent.com/24973056/218912364-5171f6c6-ddf5-4a50-8033-d05273eda7a2.png)
 
 ## MySQL Database Schema
 ![MySQL Schema](https://user-images.githubusercontent.com/24973056/128684156-398f38ac-8a9b-481c-afab-85fcabc10225.png)
@@ -35,22 +35,43 @@ Taipei Bus Radar website：https://bus.taipeilife.site/<br>
 
 ![image](https://user-images.githubusercontent.com/24973056/128689061-ce8041c6-32d0-40c8-a7d0-49b535c60c9e.png)
 
-1. 點擊可移動地圖至使用者位置(需開啟定位權限)
-2. 點選顯示公車行駛資訊
-3. 點選查看公車預計抵達站牌時間
+1. Click the button then move to user's location on map(need to turn on location permission)
+2. Click the bus icon to show operation information
+![click bus icon](https://user-images.githubusercontent.com/24973056/218915303-11992a71-829e-4456-bb11-7f11b3486aaf.png)
 
-### 路線資訊頁面
+3. Click the station icon to show estimated time of arrival of that bus stop
+![click station](https://user-images.githubusercontent.com/24973056/218915653-c0952eec-a488-4d38-8323-efd9c54d8a2a.png)
+
+![homepage2](https://user-images.githubusercontent.com/24973056/218923794-e05e9427-f0ee-4c25-a5f0-0bb879efa093.png)
+4. Search by bus route
+5. Search by bus stop
+
+### Route Information Page
 
 ![image](https://user-images.githubusercontent.com/24973056/128700003-0ee92499-1bc1-40e5-92aa-789d02dbd991.png)
 
-1. 點擊顯示業者提供路線簡圖
-2. 點擊營運業者網站
-3. 點擊切換去程、返程路線及營運車輛資訊
-4. 點擊站名地圖移動至該站牌位置
+1. Click the route number to show entire service stops
+![route map](https://user-images.githubusercontent.com/24973056/218917975-caa6b4eb-86c1-47fb-ada1-d4409bd2d505.png)
 
-### 搜尋站牌頁面
+2. Click the operator name to redirect to official website
+![official website](https://user-images.githubusercontent.com/24973056/218918137-036c72b7-1929-4e05-bf48-0279a0d713ad.png)
+
+3. Press the button to switch route origin and destination for operation information
+![origin](https://user-images.githubusercontent.com/24973056/218919837-f72e440d-aacb-42f3-8bf3-ced588baa91f.png)
+![destination](https://user-images.githubusercontent.com/24973056/218920013-fba76ba0-13f0-4a6e-960e-00feb09f4ef7.png)
+
+4. Press the stop name to move to the location on map
+![press stop name](https://user-images.githubusercontent.com/24973056/218920268-339df0c0-4bb4-43a4-b801-c2bee88f0102.png)
+
+### Search by Bus Stop Page
 
 ![image](https://user-images.githubusercontent.com/24973056/128719194-aaff5476-c452-4a99-8d9f-3bd927a1adb7.png)
+
+1. User can click any place on map, then press "Start Search" button
+![click any place](https://user-images.githubusercontent.com/24973056/218925050-dd23c9cc-6697-4fe0-abcf-0bbf40642065.png)
+
+2.Get all the bus stops within about three hundreds from that point
+
 
 使用者可點選地圖或輸入地址，查詢目標位置鄰近站牌資訊
 
