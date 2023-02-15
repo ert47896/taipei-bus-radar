@@ -37,7 +37,10 @@ Taipei Bus Radar website：https://bus.taipeilife.site/<br>
 
 1. Click the button then move to user's location on map(need to turn on location permission)
 2. Click the bus icon to show operation information
+![click bus icon](https://user-images.githubusercontent.com/24973056/218915303-11992a71-829e-4456-bb11-7f11b3486aaf.png)
+
 3. Click the station icon to show estimated time of arrival of that bus stop
+![click station](https://user-images.githubusercontent.com/24973056/218915653-c0952eec-a488-4d38-8323-efd9c54d8a2a.png)
 
 ![homepage2](https://user-images.githubusercontent.com/24973056/218923794-e05e9427-f0ee-4c25-a5f0-0bb879efa093.png)
 4. Search by bus route
@@ -48,11 +51,7 @@ Taipei Bus Radar website：https://bus.taipeilife.site/<br>
 ![image](https://user-images.githubusercontent.com/24973056/128700003-0ee92499-1bc1-40e5-92aa-789d02dbd991.png)
 
 1. Click the route number to show entire service stops
-![route map](https://user-images.githubusercontent.com/24973056/218917975-caa6b4eb-86c1-47fb-ada1-d4409bd2d505.png)
-
 2. Click the operator name to redirect to official website
-![official website](https://user-images.githubusercontent.com/24973056/218918137-036c72b7-1929-4e05-bf48-0279a0d713ad.png)
-
 3. Press the button to switch route origin and destination for operation information
 ![origin](https://user-images.githubusercontent.com/24973056/218919837-f72e440d-aacb-42f3-8bf3-ced588baa91f.png)
 ![destination](https://user-images.githubusercontent.com/24973056/218920013-fba76ba0-13f0-4a6e-960e-00feb09f4ef7.png)
