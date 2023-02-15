@@ -31,16 +31,13 @@ Taipei Bus Radar website：https://bus.taipeilife.site/<br>
 
 
 ## Features
-### [Homepage](https://bus.taipeilife.site/)
+### Homepage
 
 ![image](https://user-images.githubusercontent.com/24973056/128689061-ce8041c6-32d0-40c8-a7d0-49b535c60c9e.png)
 
 1. Click the button then move to user's location on map(need to turn on location permission)
 2. Click the bus icon to show operation information
-![click bus icon](https://user-images.githubusercontent.com/24973056/218915303-11992a71-829e-4456-bb11-7f11b3486aaf.png)
-
 3. Click the station icon to show estimated time of arrival of that bus stop
-![click station](https://user-images.githubusercontent.com/24973056/218915653-c0952eec-a488-4d38-8323-efd9c54d8a2a.png)
 
 ![homepage2](https://user-images.githubusercontent.com/24973056/218923794-e05e9427-f0ee-4c25-a5f0-0bb879efa093.png)
 4. Search by bus route
@@ -63,7 +60,7 @@ Taipei Bus Radar website：https://bus.taipeilife.site/<br>
 4. Press the stop name to move to the location on map
 ![press stop name](https://user-images.githubusercontent.com/24973056/218920268-339df0c0-4bb4-43a4-b801-c2bee88f0102.png)
 
-### [Search by Bus Stop Page](https://bus.taipeilife.site/stops)
+### Search by Bus Stop Page
 
 ![image](https://user-images.githubusercontent.com/24973056/128719194-aaff5476-c452-4a99-8d9f-3bd927a1adb7.png)
 
