@@ -43,8 +43,8 @@ Taipei Bus Radar website：https://bus.taipeilife.site/<br>
 ![click station](https://user-images.githubusercontent.com/24973056/218915653-c0952eec-a488-4d38-8323-efd9c54d8a2a.png)
 
 ![homepage2](https://user-images.githubusercontent.com/24973056/218923794-e05e9427-f0ee-4c25-a5f0-0bb879efa093.png)
-  4. Search by bus route<br>
-  5. Search by bus stop
+4. Search by bus route<br>
+5. Search by bus stop
 
 ### Route Information Page
 
@@ -71,7 +71,7 @@ Taipei Bus Radar website：https://bus.taipeilife.site/<br>
 ![distance300](https://user-images.githubusercontent.com/24973056/218938213-bb6ae88d-a39f-4c74-848b-23a41461a5a6.png)
 
 #### Method B
-  Input the address you want to search for the nearby bus stops.
+Input the address you want to search for the nearby bus stops.
 
 ### Page of each bus stop
 
