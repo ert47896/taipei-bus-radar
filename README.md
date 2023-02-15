@@ -43,7 +43,7 @@ Taipei Bus Radar website：https://bus.taipeilife.site/<br>
 ![click station](https://user-images.githubusercontent.com/24973056/218915653-c0952eec-a488-4d38-8323-efd9c54d8a2a.png)
 
 ![homepage2](https://user-images.githubusercontent.com/24973056/218923794-e05e9427-f0ee-4c25-a5f0-0bb879efa093.png)
-4. Search by bus route
+4. Search by bus route<br>
 5. Search by bus stop
 
 ### Route Information Page
@@ -71,7 +71,7 @@ Taipei Bus Radar website：https://bus.taipeilife.site/<br>
 
 ### Page of each bus stop
 
-![image](https://user-images.githubusercontent.com/24973056/128720468-0d6a8d6e-7ecf-4d9c-aa8b-3952a5c1cc37.png)
+![each bus stop](https://user-images.githubusercontent.com/24973056/128720468-0d6a8d6e-7ecf-4d9c-aa8b-3952a5c1cc37.png)
 
 1. Click to present each route status
 2. Show the stop name on map
