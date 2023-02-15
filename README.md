@@ -61,12 +61,12 @@ Taipei Bus Radar website：https://bus.taipeilife.site/<br>
 
 ### Search by Bus Stop Page
 
-![image](https://user-images.githubusercontent.com/24973056/128719194-aaff5476-c452-4a99-8d9f-3bd927a1adb7.png)
+![search by stop](https://user-images.githubusercontent.com/24973056/128719194-aaff5476-c452-4a99-8d9f-3bd927a1adb7.png)
 
 1. User can click any place on map, then press "Start Search" button
 ![click any place](https://user-images.githubusercontent.com/24973056/218925050-dd23c9cc-6697-4fe0-abcf-0bbf40642065.png)
 
-2.Get all the bus stops within about three hundreds from that point, choose stop name for detail information
+2. Get all the bus stops within about three hundreds from that point, choose stop name for detail information
 ![distance300](https://user-images.githubusercontent.com/24973056/218938213-bb6ae88d-a39f-4c74-848b-23a41461a5a6.png)
 
 ### Page of each bus stop
