@@ -4,7 +4,7 @@ This website is built with real-time Taipei City bus data from [Transport Data w
 Features include:
 * Show real-time buses location and operation information(include speed, platenumber, route number, route origin and destination and estimated time of arrival)
 * Show the pass by routes for selected bus station
-* Show the bus stations informantion according the address which user inputed
+* Show the bus stations informantion according the address which user inputted
 
 
 ## Demo
