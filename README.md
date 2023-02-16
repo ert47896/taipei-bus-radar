@@ -1,6 +1,6 @@
 # [Taipei Bus Radar](https://bus.taipeilife.site/) 台北市公車動態資訊網站
 
-This website is built with realtime Taipei City bus data from [Transport Data wXchange](https://tdx.transportdata.tw/).
+This website is built with real-time Taipei City bus data from [Transport Data wXchange](https://tdx.transportdata.tw/).
 Features include:
 * Show realtime buses location and operation information(include speed, platenumber, route number, route origin and destination and estimated time of arrival)
 * Show the pass by routes for selected bus station
